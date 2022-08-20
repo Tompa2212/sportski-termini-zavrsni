@@ -89,7 +89,7 @@ export const getSportTerm = async (req, res) => {
           country: a.country,
           sport: s.name,
           teams: teams,
-          vreatedBy: u.username
+          createdBy: u.username
       } as sT
   `,
       { sportTermId }
