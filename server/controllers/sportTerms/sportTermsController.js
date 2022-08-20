@@ -89,7 +89,7 @@ export const getSportTerm = async (req, res) => {
           country: a.country,
           sport: s.name,
           teams: teams,
-          organizedBy: u.username
+          vreatedBy: u.username
       } as sT
   `,
       { sportTermId }
@@ -104,7 +104,7 @@ export const getSportTerm = async (req, res) => {
 
   const sportTerm = toNativeTypes(resp.records[0].get('sT'));
 
-  return res.status(StatusCodes.OK).json({ sportTerm });
+  return res.status(StatusCodes.OK).json({ data: sportTerm });
 };
 
 export const createSportTerm = async (req, res) => {
@@ -173,7 +173,7 @@ export const createSportTerm = async (req, res) => {
 
   const sportTerm = resp.records[0].get('sT');
 
-  res.status(StatusCodes.CREATED).json({ sportTerm });
+  res.status(StatusCodes.CREATED).json({ data: sportTerm });
 };
 
 export const deleteSportTerm = async (req, res) => {

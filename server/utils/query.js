@@ -1,5 +1,6 @@
 /**
- * Deletes old players of wanted team
+ * Deletes old players of wanted team and creates
+ * new players for the team
  * @param {*} tx DB transaction object
  * @param {*} teamId ID of team
  * @param {*} players Array of player objects(id required)
@@ -50,6 +51,7 @@ export const getUserPlayedGames = async (tx, userId) => {
     `
     MATCH (u:User {id: $userId})
     OPTIONAL MATCH (u)-[:PLAYED_FOR]->(t)<-[:HAS_TEAM]-(sT)
+    WHERE sT.played = false
     RETURN sT.id AS id
   `,
     { userId }

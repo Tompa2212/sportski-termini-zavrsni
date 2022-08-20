@@ -1,6 +1,7 @@
 import express from 'express';
-import { getUserInfo } from '../controllers/userController.js';
+import { getUserInfo, getUsers } from '../controllers/userController.js';
 
 export const userRouter = express.Router();
 
+userRouter.get('/', getUsers);
 userRouter.get('/:id', getUserInfo);
