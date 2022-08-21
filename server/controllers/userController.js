@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { getDriver } from '../db/neo4j.js';
 import { BadRequestError } from '../errors/bad-request.js';
 import { NotFoundError } from '../errors/not-found.js';
-import { findById } from '../utils/query/findById.js';
+import { toNativeTypes } from '../utils/nativeTypes.js';
 import { getUserSportStats } from '../utils/query/user/getUserSportStats.js';
 
 export const getUserInfo = async (req, res) => {
@@ -15,17 +15,30 @@ export const getUserInfo = async (req, res) => {
   const session = getDriver().session();
 
   const user = await session.readTransaction(async (tx) => {
-    const user = (await findById(tx, 'User', userId)) || {};
+    const sportStats = await getUserSportStats(tx, userId);
 
-    if (!user) {
+    const resp = await tx.run(
+      `
+      MATCH (subject:User {id: $userId})
+      OPTIONAL MATCH (subject)-[r:FRIEND_WITH]-(person)
+      WITH subject, count(person) AS numOfFriends
+      RETURN subject {
+        .id,
+        .username,
+        .email,
+        numOfFriends: numOfFriends
+      } AS info
+    `,
+      { userId }
+    );
+
+    if (!resp || resp.records.length === 0) {
       throw new NotFoundError(`No user with id: ${userId}`);
     }
-
-    const sportStats = await getUserSportStats(tx, userId);
-    const { password, ...safeProperties } = user;
+    const info = toNativeTypes(resp.records[0].get('info'));
 
     return {
-      info: safeProperties,
+      info,
       sportStats,
     };
   });
