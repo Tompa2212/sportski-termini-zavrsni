@@ -65,7 +65,7 @@ export const removeFriend = async (req, res) => {
     throw new BadRequestError('No data found with provided values');
   }
 
-  return res.status(StatusCodes.OK);
+  return res.status(StatusCodes.OK).json({ msg: 'Friend removed' });
 };
 
 export const getUserFriends = async (req, res) => {

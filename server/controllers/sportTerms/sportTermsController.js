@@ -59,7 +59,7 @@ export const getAllSportTerms = async (req, res) => {
 
   return res
     .status(StatusCodes.OK)
-    .json({ numOfItems: sportTerms.length, data: sportTerms });
+    .json({ numOfItems: sportTerms.length, sportTerms });
 };
 
 export const getSportTerm = async (req, res) => {
@@ -104,7 +104,7 @@ export const getSportTerm = async (req, res) => {
 
   const sportTerm = toNativeTypes(resp.records[0].get('sT'));
 
-  return res.status(StatusCodes.OK).json({ data: sportTerm });
+  return res.status(StatusCodes.OK).json({ sportTerm });
 };
 
 export const createSportTerm = async (req, res) => {
@@ -129,8 +129,8 @@ export const createSportTerm = async (req, res) => {
       `
     MATCH (s:Sport {name: $sport})
     MATCH (u:User {id: $userId})
-    WITH s, u
-    MERGE (a:Address {address: $address, city: $city, country: $country})<-[:HAS_ADDRESS]-(sT:SportTerm {
+    MERGE (a:Address {address: $address, city: $city, country: $country})
+    CREATE (a)<-[:HAS_ADDRESS]-(sT:SportTerm {
         id: randomUuid(), 
         played: false, 
         pricePerPerson: $pricePerPerson,
@@ -173,7 +173,7 @@ export const createSportTerm = async (req, res) => {
 
   const sportTerm = resp.records[0].get('sT');
 
-  res.status(StatusCodes.CREATED).json({ data: sportTerm });
+  res.status(StatusCodes.CREATED).json({ sportTerm });
 };
 
 export const deleteSportTerm = async (req, res) => {

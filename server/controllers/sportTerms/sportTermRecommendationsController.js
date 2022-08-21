@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { getDriver } from '../../db/neo4j.js';
 import { toNativeTypes } from '../../utils/nativeTypes.js';
-import { getUserFavSports } from '../../utils/query.js';
+import { getUserFavSports } from '../../utils/query/user/getUserFavSports.js';
 
 export const getRecommendedSportTerms = async (req, res) => {
   const { id: userId } = req.params;
@@ -39,5 +39,5 @@ export const getRecommendedSportTerms = async (req, res) => {
 
   return res
     .status(StatusCodes.OK)
-    .json({ data: sportTerms, numOfItems: sportTerms.length });
+    .json({ sportTerms, numOfItems: sportTerms.length });
 };

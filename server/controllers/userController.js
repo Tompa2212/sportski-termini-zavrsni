@@ -2,28 +2,37 @@ import { StatusCodes } from 'http-status-codes';
 import { getDriver } from '../db/neo4j.js';
 import { BadRequestError } from '../errors/bad-request.js';
 import { NotFoundError } from '../errors/not-found.js';
+import { findById } from '../utils/query/findById.js';
+import { getUserSportStats } from '../utils/query/user/getUserSportStats.js';
 
 export const getUserInfo = async (req, res) => {
-  const { id } = req.params;
+  const { id: userId } = req.params;
 
-  if (!id) {
+  if (!userId) {
     throw new BadRequestError('Please provide user id.');
   }
 
   const session = getDriver().session();
 
-  const resp = await session.readTransaction((tx) =>
-    tx.run(`
-    MATCH (u:User {id: $id})
-    
-  `)
-  );
+  const user = await session.readTransaction(async (tx) => {
+    const user = (await findById(tx, 'User', userId)) || {};
+
+    if (!user) {
+      throw new NotFoundError(`No user with id: ${userId}`);
+    }
+
+    const sportStats = await getUserSportStats(tx, userId);
+    const { password, ...safeProperties } = user;
+
+    return {
+      info: safeProperties,
+      sportStats,
+    };
+  });
 
   await session.close();
 
-  if (!resp || resp.records.length === 0) {
-    throw new NotFoundError(`No user with id: ${id}`);
-  }
+  res.status(StatusCodes.OK).json({ user });
 };
 
 export const getUsers = async (req, res) => {
@@ -49,5 +58,5 @@ export const getUsers = async (req, res) => {
 
   const users = resp.records.map((row) => row.get('u'));
 
-  res.status(StatusCodes.OK).json({ data: users });
+  res.status(StatusCodes.OK).json({ users });
 };

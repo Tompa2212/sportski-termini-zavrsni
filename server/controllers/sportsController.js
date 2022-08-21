@@ -26,7 +26,10 @@ export const getAllSports = async (req, res) => {
         `);
     }
 
-    return tx.run(`MATCH (s:Sport) RETURN s`);
+    return tx.run(`
+    MATCH (s:Sport) 
+    RETURN properties(s) AS s
+    ORDER BY s.name`);
   });
 
   await session.close();

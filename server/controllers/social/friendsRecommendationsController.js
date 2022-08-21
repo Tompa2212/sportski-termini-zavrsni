@@ -2,7 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import { getDriver } from '../../db/neo4j.js';
 import { NotFoundError } from '../../errors/not-found.js';
 import { toNativeTypes } from '../../utils/nativeTypes.js';
-import { getUserFavSports, getUserPlayedGames } from '../../utils/query.js';
+import { getUserPlayedGames } from '../../utils/query/user/getUserPlayedGames.js';
+import { getUserFavSports } from '../../utils/query/user/getUserFavSports.js';
 import { findById } from '../../utils/query/findById.js';
 
 export const getRecommendedFriends = async (req, res) => {
@@ -61,5 +62,5 @@ export const getRecommendedFriends = async (req, res) => {
     })
   );
 
-  res.status(StatusCodes.OK).json({ data: recommendedFriends });
+  res.status(StatusCodes.OK).json({ recommendedFriends });
 };

@@ -1,17 +1,17 @@
 import { BadRequestError } from '../errors/bad-request.js';
 import { NotFoundError } from '../errors/not-found.js';
 
-export const validateNumOfPlayers = async (tx, teamId, players) => {
+export const validateNumOfPlayers = async (tx, sportTermId, players) => {
   const resp = await tx.run(
     `
-        MATCH (sT)-[:HAS_TEAM]-(t:Team {id: $teamId})
+        MATCH (sT {id: $sportTermId})
         RETURN sT.maxPlayersPerTeam as maxPlayers
     `,
-    { teamId }
+    { sportTermId }
   );
 
   if (!resp || !resp.records[0]) {
-    throw new NotFoundError(`No sport term with id: ${sportTermId}`);
+    throw new NotFoundError(`No tean with id: ${sportTermId}`);
   }
 
   const playersPerTeam = resp.records[0].get('maxPlayers');

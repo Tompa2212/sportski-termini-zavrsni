@@ -61,7 +61,7 @@ export const createTeam = async (req, res) => {
   }
 
   const team = await session.writeTransaction(async (tx) => {
-    let team = tx.run(
+    let team = await tx.run(
       `
         MATCH (sT:SportTerm {id: $sportTermId})
         CREATE (sT)-[:HAS_TEAM]->(t:Team {id: randomUuid(), name: $name})
@@ -80,7 +80,7 @@ export const createTeam = async (req, res) => {
       return team;
     }
 
-    const resp = tx.run(
+    const resp = await tx.run(
       `
         MATCH (t:Team {id: $teamId})
         WITH t
