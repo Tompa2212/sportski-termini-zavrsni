@@ -1,0 +1,21 @@
+$primary: #8db087;
+$accent: #60b054;
+$secondary: #283e24;
+
+$white: #fafff5;
+$black: rgb(32, 32, 32);
+
+$gray: hsl(0, 0%, 51%);
+$gray-light: hsl(0, 0%, 74%);
+$gray-very-light: hsla(0, 0%, 88%, 1);
+
+$textColorLight: #bdbdbd;
+$red: #eb5757;
+
+$bg-color: #fafff5;
+$text-color: #091209;
+
+$labelFont: '"Montserrat", sans-serif';
+
+$nav-height: 3rem;
+$section-min-height: calc(100vh - var(--nav-height) - 2rem);

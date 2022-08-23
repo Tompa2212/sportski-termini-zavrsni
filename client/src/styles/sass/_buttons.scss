@@ -1,0 +1,11 @@
+.btn {
+  background-color: $primary;
+  color: $text-color;
+  border: 1px solid transparent;
+  border-radius: 0.2rem;
+  padding: 0;
+}
+
+.btn:not(:disabled) {
+  cursor: pointer;
+}

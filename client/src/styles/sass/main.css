@@ -1,0 +1,173 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h4,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role0='list'] {
+  list-style: none;
+}
+
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+svg {
+  color: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  color: #091209;
+  background-color: #fafff5;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  line-height: 2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-control {
+  padding-bottom: 1.2rem;
+  margin-bottom: 0.7rem;
+  position: relative;
+}
+
+.form-control .form-label {
+  display: block;
+  margin-bottom: 0.9rem;
+}
+
+.form-control .form-error {
+  font-size: 0.8rem;
+  color: red;
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+}
+
+.form-control input {
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  border: 2px solid #091209;
+  border-radius: 4px;
+  padding: 0.4rem;
+  outline: 2px solid transparent;
+  background-color: #fafff5;
+  color: #091209;
+}
+
+.form-control input::placeholder {
+  font-size: 0.9rem;
+}
+
+.form-control input:focus {
+  outline: none;
+  border-color: #60b054;
+}
+
+.submit-cont {
+  text-align: center;
+}
+
+.submit-cont .form-submit-btn {
+  display: block;
+  color: #091209;
+  padding: 0.7rem 0;
+  background-color: #8db087;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  border: transparent;
+  border-radius: 4px;
+  transition: background-color 150ms ease;
+}
+
+.submit-cont .form-submit-btn:disabled {
+  background-color: #bdbdbd;
+}
+
+.submit-cont .form-submit-btn:not(:disabled):hover {
+  background-color: #60b054;
+}
+
+.register-link {
+  color: #091209;
+}
+
+.btn {
+  background-color: #8db087;
+  color: #091209;
+  border: 1px solid transparent;
+  border-radius: 0.2rem;
+  padding: 0;
+}
+
+.btn:not(:disabled) {
+  cursor: pointer;
+}
+/*# sourceMappingURL=main.css.map */

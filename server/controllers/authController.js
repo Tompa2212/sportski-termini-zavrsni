@@ -44,7 +44,7 @@ export const register = async (req, res) => {
 
   const user = resp.records[0].get('u');
 
-  const { password, ...safeProperties } = user.properties;
+  const { password, email: respEmail, ...safeProperties } = user.properties;
 
   res
     .status(StatusCodes.CREATED)
@@ -52,9 +52,9 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { username, password: plainPassword, email } = req.body;
+  const { username, password: plainPassword } = req.body;
 
-  if (!username || !plainPassword || !email) {
+  if (!username || !plainPassword) {
     throw new BadRequestError('Please provide username, password, and email');
   }
 
@@ -63,22 +63,22 @@ export const login = async (req, res) => {
   const resp = await session.readTransaction((tx) =>
     tx.run(
       `
-    MATCH (u:User {email: $email})
+    MATCH (u:User {username: $username})
     RETURN u
   `,
-      { email }
+      { username }
     )
   );
 
   await session.close();
 
-  if (!resp) {
+  if (!resp || resp.records.length === 0) {
     throw new UnauthenticatedError(`Invalid credentials`);
   }
 
   const user = resp.records[0].get('u');
 
-  const { password, ...safeProperties } = user.properties;
+  const { password, email: respEmail, ...safeProperties } = user.properties;
 
   const isPasswordCorrect = bcrypt.compare(plainPassword, password);
 

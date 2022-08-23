@@ -1,0 +1,68 @@
+.form-control {
+  padding-bottom: 1.2rem;
+  margin-bottom: 0.7rem;
+  position: relative;
+}
+
+.form-control .form-label {
+  display: block;
+  margin-bottom: 0.9rem;
+}
+
+.form-control .form-error {
+  font-size: 0.8rem;
+  color: red;
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+}
+
+.form-control input {
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  border: 2px solid $text-color;
+  border-radius: 4px;
+  padding: 0.4rem;
+  outline: 2px solid transparent;
+  background-color: $bg-color;
+  color: $text-color;
+}
+
+.form-control input::placeholder {
+  font-size: 0.9rem;
+}
+
+.form-control input:focus {
+  outline: none;
+  border-color: $accent;
+}
+
+.submit-cont {
+  text-align: center;
+}
+
+.submit-cont .form-submit-btn {
+  display: block;
+  color: $text-color;
+  padding: 0.7rem 0;
+  background-color: $primary;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  border: transparent;
+  border-radius: 4px;
+  transition: background-color 150ms ease;
+}
+
+.submit-cont .form-submit-btn:disabled {
+  background-color: $gray-light;
+}
+
+.submit-cont .form-submit-btn:not(:disabled):hover {
+  background-color: $accent;
+}
+
+.register-link {
+  color: $text-color;
+}
