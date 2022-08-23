@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAuth } from '../../providers/authProvider';
-
+import loginImg from '../../assets/login-bg.jpg';
 import { Link } from 'react-router-dom';
 import { AutoForm, AutoField } from 'uniforms-unstyled';
 import { SubmitField } from '../../components/FormFields/SubmitField';
@@ -70,18 +70,26 @@ export default function LoginPage() {
 
 const Wrapper = styled.section`
   display: grid;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: 3fr 4fr;
   height: 100vh;
 
   .left {
+    display: grid;
+    justify-content: center;
+    padding: 20vh 2rem;
+
     background-color: var(--text-color);
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url(${loginImg});
+    background-position: center;
+    background-size: cover;
     height: 100%;
+
+    color: var(--white);
   }
 
   .right {
     padding: 3rem 2rem;
-    display: grid;
-    justify-content: center;
 
     .title {
       margin-bottom: 2rem;
@@ -89,6 +97,7 @@ const Wrapper = styled.section`
 
     .content {
       max-width: 30rem;
+      margin: 0 auto;
     }
   }
 `;

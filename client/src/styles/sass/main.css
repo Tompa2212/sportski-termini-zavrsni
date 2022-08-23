@@ -69,8 +69,8 @@ svg {
 }
 
 body {
-  color: #091209;
-  background-color: #fafff5;
+  color: #303237;
+  background-color: #f1f3f6;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -92,13 +92,13 @@ h1 {
 
 .form-control {
   padding-bottom: 1.2rem;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.8rem;
   position: relative;
 }
 
 .form-control .form-label {
   display: block;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.6rem;
 }
 
 .form-control .form-error {
@@ -113,12 +113,13 @@ h1 {
   font-family: inherit;
   font-size: inherit;
   width: 100%;
-  border: 2px solid #091209;
+  border: 1px solid #b4beca;
+  outline: 2px solid transparent;
   border-radius: 4px;
   padding: 0.4rem;
   outline: 2px solid transparent;
-  background-color: #fafff5;
-  color: #091209;
+  background-color: #f1f3f6;
+  color: #303237;
 }
 
 .form-control input::placeholder {
@@ -126,8 +127,8 @@ h1 {
 }
 
 .form-control input:focus {
-  outline: none;
-  border-color: #60b054;
+  outline: 2px solid #3445a3;
+  border: 1px solid transparent;
 }
 
 .submit-cont {
@@ -136,9 +137,9 @@ h1 {
 
 .submit-cont .form-submit-btn {
   display: block;
-  color: #091209;
+  color: #f1f3f6;
   padding: 0.7rem 0;
-  background-color: #8db087;
+  background-color: #303237;
   width: 100%;
   margin: 0 auto;
   margin-bottom: 1rem;
@@ -148,20 +149,21 @@ h1 {
 }
 
 .submit-cont .form-submit-btn:disabled {
-  background-color: #bdbdbd;
+  background-color: #62718a;
 }
 
 .submit-cont .form-submit-btn:not(:disabled):hover {
-  background-color: #60b054;
+  background-color: #3182ed;
 }
 
 .register-link {
-  color: #091209;
+  color: #3182ed;
+  text-decoration: none;
 }
 
 .btn {
-  background-color: #8db087;
-  color: #091209;
+  background-color: #3445a3;
+  color: #303237;
   border: 1px solid transparent;
   border-radius: 0.2rem;
   padding: 0;
