@@ -24,11 +24,11 @@ function createValidator(schema: Object) {
         ?.filter((error) => error.keyword !== 'type')
         .map((error) => {
           if (error.keyword === 'required') {
-            error.message = 'Required';
+            error.message = 'Obavezno polje';
           }
 
           if (error.keyword === 'format' && error.params.format === 'email') {
-            error.message = 'Invalid email address';
+            error.message = 'Netočna email adresa';
           }
 
           error.message = capitalize(error.message);

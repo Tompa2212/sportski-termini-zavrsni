@@ -4,19 +4,23 @@ $accent-light: hsla(202, 71%, 52%, 1);
 $secondary: #3f4044;
 
 $white: #f1f3f6;
-$black: #303237;
+$black: #18191a;
 
 $gray-dark: #62718a;
 $gray: #77859a;
 $gray-light: #b4beca;
 $gray-very-light: hsla(0, 0%, 88%, 1);
 
-$red: #eb5757;
+$red: #da2e2e;
 
 $bg-color: $white;
 $text-color: $black;
 
 $labelFont: '"Montserrat", sans-serif';
 
-$nav-height: 3rem;
+$nav-size: 4rem;
 $section-min-height: calc(100vh - var(--nav-height) - 2rem);
+
+$border: 1px solid $gray;
+$border-radius: 0.7rem;
+$speed: 500ms;

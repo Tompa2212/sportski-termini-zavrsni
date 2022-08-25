@@ -1,16 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import axios from 'axios';
+import { localStorageUtil } from '../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
 
 export interface User {
   token: string;
   username: string;
-  email: string;
   id: string;
 }
 
 type AuthState = {
   user: User | null;
-  status: 'pending' | 'success' | 'error';
+  loading: boolean;
   error: Error | null;
 };
 
@@ -23,8 +24,8 @@ type AuthMethodsState = {
 type AuthProviderState = AuthState & AuthMethodsState;
 
 const initialState: AuthState = {
-  user: null,
-  status: 'pending',
+  user: localStorageUtil.getItem('user'),
+  loading: false,
   error: null,
 };
 
@@ -34,36 +35,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [authState, setAuthState] = useState<AuthState>(initialState);
+  const navigate = useNavigate();
 
   const login = useCallback(async <T extends {}>(data: T) => {
     try {
+      setAuthState((prev) => ({ ...prev, loading: true }));
+
       const response = await axios.post(
         'http://localhost:3000/api/v1/auth/login',
         data
       );
 
-      setAuthState((prev) => ({ ...prev, user: response.data, status: 'success' }));
+      setAuthState((prev) => ({ ...prev, user: response.data, loading: false }));
+      localStorageUtil.setItem('user', response.data);
     } catch (error: any) {
-      setAuthState((prev) => ({ ...prev, error, status: 'error' }));
+      setAuthState((prev) => ({ ...prev, error, loading: false }));
+      localStorageUtil.removeItem('user');
     }
   }, []);
 
   const register = useCallback(async <T extends {}>(data: T) => {
     try {
+      setAuthState((prev) => ({ ...prev, loading: true }));
       const response = await axios.post(
         'http://localhost:3000/api/v1/auth/register',
         data
       );
 
-      setAuthState(response.data);
+      setAuthState((prev) => ({ ...prev, user: response.data, loading: false }));
+      localStorageUtil.setItem('user', response.data);
     } catch (error: any) {
-      setAuthState((prev) => ({ ...prev, error, status: 'error' }));
+      setAuthState((prev) => ({ ...prev, error, loading: false }));
+      localStorageUtil.removeItem('user');
     }
   }, []);
 
   const signout = useCallback(() => {
     setAuthState(initialState);
-  }, []);
+    navigate('/login');
+    localStorageUtil.removeItem('user');
+  }, [navigate]);
 
   const value = {
     ...authState,
@@ -77,8 +88,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = () => React.useContext(authContext);
 
-export const useUserState = () => {
-  const data = React.useContext(authContext);
-
-  return data ? data.user : null;
-};
+export const useUser = () => React.useContext(authContext).user;

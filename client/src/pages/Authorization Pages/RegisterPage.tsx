@@ -1,24 +1,24 @@
 import styled from 'styled-components';
-import { useAuth } from '../../providers/authProvider';
-import loginImg from '../../assets/login-bg.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AutoForm, AutoField } from 'uniforms-unstyled';
 import { SubmitField } from '../../components/FormFields/SubmitField';
+import { useAuth } from '../../providers/authProvider';
 import { bridge } from '../../schema/bridge';
-import { loginSchema } from '../../schema/loginSchema';
-import { useNavigate } from 'react-router-dom';
+import { registerSchema, registerFormFields } from '../../schema/registerSchema';
+import loginImg from '../../assets/login-bg.jpg';
 import { useEffect } from 'react';
 
-const schema = bridge(loginSchema);
-const authError = { message: 'Invalid username or password' };
-const error = false;
+const schema = bridge(registerSchema);
 
-export default function LoginPage() {
-  const { login, user } = useAuth();
+const error = false;
+const authError = 'Invalid credentials';
+
+export const RegisterPage = () => {
+  const { register, user, loading } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (model: Record<string, any>) => {
-    await login(model);
+    await register(model);
   };
 
   useEffect(() => {
@@ -37,26 +37,25 @@ export default function LoginPage() {
             <h2>Zaigraj svoje najdraže sportove i upoznaj nove ljude!</h2>
           </div>
           <AutoForm schema={schema} onSubmit={onSubmit}>
-            <AutoField
-              name="username"
-              className="form-login-input"
-              placeholder="Korisničko ime"
-              authError={error ? authError : null}
-              label="Korisničko ime"
-            />
-            <AutoField
-              name="password"
-              className="form-login-input"
-              placeholder="Lozinka"
-              authError={error ? authError : null}
-              label="Lozinka"
-            />
+            {registerFormFields.map((field, index) => {
+              return (
+                <AutoField
+                  key={index}
+                  name={field.name}
+                  label={field.label}
+                  placeholder={field.label}
+                  className="form-login-input"
+                  authError={error ? authError : null}
+                />
+              );
+            })}
+
             <div className="submit-cont">
-              <SubmitField title="Prijava" className="btn form-submit-btn" />
+              <SubmitField title="Registracija" className="btn form-submit-btn" />
               <p>
-                Nemaš korisnički račun?{' '}
+                Već imaš korisnički račun?{' '}
                 <Link to="/register" className="register-link">
-                  Registracija
+                  {loading ? 'Obrada...' : 'Prijava'}
                 </Link>
               </p>
             </div>
@@ -65,7 +64,7 @@ export default function LoginPage() {
       </div>
     </Wrapper>
   );
-}
+};
 
 const Wrapper = styled.section`
   display: grid;
@@ -75,7 +74,6 @@ const Wrapper = styled.section`
   .left {
     display: grid;
     justify-content: center;
-    padding: 20vh 2rem;
 
     background-color: var(--text-color);
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
@@ -88,7 +86,7 @@ const Wrapper = styled.section`
   }
 
   .right {
-    padding: 3rem 2rem;
+    padding: 2rem;
 
     .title {
       margin-bottom: 2rem;

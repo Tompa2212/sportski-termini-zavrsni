@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import 'express-async-errors';
 dotenv.config();
 import { initDriver } from './db/neo4j.js';
@@ -20,6 +21,7 @@ import {
 const app = express();
 const port = process.env.APP_PORT || 3000;
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 

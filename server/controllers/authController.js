@@ -20,11 +20,11 @@ export const register = async (req, res) => {
   const resp = await session.writeTransaction((tx) =>
     tx.run(
       `
-      CREATE (u:User {id: randomUuid(), username:$username, password:$password, email:$email})
+      CREATE (u:User {id: randomUuid(), username: $username, password:$password, email:$email})
       WITH u
       UNWIND $favoriteSports as sports
-      MATCH (s:Sport { name:sports})
-      CREATE (u)-[:HAS_FAVORITE_SPORT]->(s) 
+      MATCH (s:Sport { name:sports.name})
+      CREATE (u)-[:HAS_FAVORITE_SPORT]->(s)
       RETURN u
   `,
       {
@@ -38,7 +38,7 @@ export const register = async (req, res) => {
 
   await session.close();
 
-  if (!resp) {
+  if (!resp || resp.records.length === 0) {
     throw new BadRequestError('Unable to register user.');
   }
 

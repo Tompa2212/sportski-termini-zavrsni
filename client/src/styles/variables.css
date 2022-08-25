@@ -1,23 +1,24 @@
 :root {
-  --primary: #bdf5b3;
-  --accent: #60b054;
-  --secondary: #283e24;
+  --primary: #3445a3;
+  --accent: hsla(214, 84%, 56%, 1);
+  --accent-light: hsla(202, 71%, 52%, 1);
+  --secondary: #3f4044;
 
-  --white: #fafff5;
-  --black: rgb(32, 32, 32);
+  --white: #f1f3f6;
+  --black: #303237;
 
-  --gray: hsla(0, 0%, 51%);
-  --gray-light: hsla(0, 0%, 74%);
+  --gray-dark: #62718a;
+  --gray: #77859a;
+  --gray-light: #b4beca;
   --gray-very-light: hsla(0, 0%, 88%, 1);
 
-  --textColorLight: #bdbdbd;
   --red: #eb5757;
+
+  --bg-color: var(--white);
+  --text-color: var(--black);
 
   --labelFont: '"Montserrat", sans-serif';
 
   --nav-height: 3rem;
   --section-min-height: calc(100vh - var(--nav-height) - 2rem);
-
-  --bg-color: #fafff5;
-  --text-color: #091209;
 }

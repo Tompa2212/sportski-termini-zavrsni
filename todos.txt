@@ -1,0 +1,1 @@
+1. Authentifikacija bez local storagea, koristiti cookies i refresh token na backendu

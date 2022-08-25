@@ -1,7 +1,7 @@
 import { isObjectLike } from 'lodash';
 
 const remove = (obj: Record<string, any>) => {
-  Object.keys(obj).forEach((key) => {
+  Object.keys(obj || {}).forEach((key) => {
     const val = obj[key];
 
     if (val === null || val === undefined) {
@@ -23,5 +23,5 @@ export const prepareModel = (model: Record<string, any>) => {
 
   remove(newModel);
 
-  return model;
+  return newModel;
 };
