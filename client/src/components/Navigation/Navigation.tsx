@@ -3,9 +3,9 @@ import { SettingsDropdown } from './SettingsDropdown';
 import { ReactComponent as HomeIcon } from '../../assets/icons/home.svg';
 import { ReactComponent as CreateSportTermIcon } from '../../assets/icons/createTerm.svg';
 import { ReactComponent as SportTermsIcon } from '../../assets/icons/soccer.svg';
-import { ReactComponent as NotificationIcon } from '../../assets/icons/notification.svg';
 import { useState } from 'react';
 import { UserSearch } from './SearchField/UserSearch';
+import { Notifications } from './Notifications/Notifications';
 
 const links = [
   {
@@ -49,10 +49,7 @@ export const Navigation = () => {
           })}
         </ul>
         <ul className="user-nav">
-          <div className="user-nav__icon-box">
-            <NotificationIcon className="user-nav__icon" />
-            <span className="user-nav__notification">7</span>
-          </div>
+          <Notifications />
           <SettingsDropdown />
         </ul>
       </nav>

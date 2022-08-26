@@ -83,18 +83,19 @@ export const deleteFriendRequest = async (req, res) => {
 };
 
 export const getUserFriendRequests = async (req, res) => {
-  const { id: userId } = req.user;
+  const { userId } = req.user;
 
   const session = getDriver().session();
 
   const resp = await session.readTransaction(async (tx) =>
     tx.run(
       `
-    MATCH (u:User {id: $userId})
-    OPTIONAL MATCH (u)-[:HAS_FRIEND_REQUEST]->(fr:FriendRequest)
+    MATCH (receiver:User {id: $userId})
+    OPTIONAL MATCH (receiver)-[:HAS_FRIEND_REQUEST]->(fr:FriendRequest)<-[:SENT_FRIEND_REQUEST]-(sender)
     RETURN fr {
       .id,
-      .sentAt
+      .sentAt,
+      sender: sender.username
     }
     ORDER BY fr.sentAt DESC
   `,
@@ -109,11 +110,6 @@ export const getUserFriendRequests = async (req, res) => {
   }
 
   return res.status(StatusCodes.OK).json({
-    userId,
-    friendRequests: resp.records.flatMap((row) => {
-      const fr = row.get('fr');
-
-      return fr ? [fr] : [];
-    }),
+    friendRequests: resp.records.map((row) => toNativeTypes(row.get('fr'))),
   });
 };

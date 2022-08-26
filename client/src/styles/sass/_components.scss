@@ -1,0 +1,41 @@
+/* ----------- DROPDOWN ---------*/
+
+.dropdown-container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &__dropdown {
+    position: absolute;
+    left: 0;
+    top: 3rem;
+
+    padding: 1.5rem 0.8rem;
+    min-width: 20rem;
+    background-color: $bg-color;
+    transform: translateX(calc(-50% + 2.8rem));
+    border: $border;
+    border-radius: $border-radius;
+    box-shadow: 0px 2px 1rem rgba($text-color, 0.2);
+  }
+
+  &__item {
+    padding: 0.5rem;
+
+    border-radius: $border-radius;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: $gray-very-light;
+    }
+  }
+
+  &__icon {
+    display: inline-block;
+    background-color: var(--gray);
+    padding: 1.4rem;
+    border-radius: 50%;
+  }
+}

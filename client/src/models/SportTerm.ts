@@ -11,4 +11,7 @@ export interface SportTerm {
   comment: string;
   id: string;
   played: boolean;
+  sport: string;
+  maxPlayers: number;
+  numOfPlayers: number;
 }

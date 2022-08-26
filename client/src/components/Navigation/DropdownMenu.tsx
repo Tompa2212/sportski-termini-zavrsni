@@ -22,16 +22,11 @@ const DropdownItem = (props: {
   );
 };
 
-export const DropdownMenu: React.FC<{ onClickOutside: () => void }> = ({
-  onClickOutside,
-}) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
+export const DropdownMenu: React.FC = () => {
   const { signout } = useAuth();
 
-  useOnClickOutside(dropdownRef, onClickOutside);
-
   return (
-    <div className="dropdown" style={{ height: 200 }} ref={dropdownRef}>
+    <div className="dropdown" style={{ height: 200 }}>
       <CSSTransition in timeout={500} classNames="menu-primary" unmountOnExit>
         <div className="menu">
           <DropdownItem leftIcon={<PersonIcon className="menu__icon" />}>

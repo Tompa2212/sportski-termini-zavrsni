@@ -5,7 +5,7 @@
   --secondary: #3f4044;
 
   --white: #f1f3f6;
-  --black: #303237;
+  --black: rgb(48, 50, 55);
 
   --gray-dark: #62718a;
   --gray: #77859a;
@@ -13,12 +13,13 @@
   --gray-very-light: hsla(0, 0%, 88%, 1);
 
   --red: #eb5757;
+  --green: rgb(28, 155, 28);
 
   --bg-color: var(--white);
   --text-color: var(--black);
 
-  --labelFont: '"Montserrat", sans-serif';
-
   --nav-height: 3rem;
-  --section-min-height: calc(100vh - var(--nav-height) - 2rem);
+
+  --border: 1px solid var(--text-color);
+  --box-shadow: 0 2px 1rem rgba(48, 50, 55, 0.2);
 }

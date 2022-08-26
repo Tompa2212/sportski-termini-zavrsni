@@ -13,21 +13,24 @@ export const getRecommendedSportTerms = async (req, res) => {
     const resp = await tx.run(
       `
         MATCH (subject:User {id: $userId})
-        MATCH (subject)-[:FRIEND_WITH]-(:User)-[:FRIEND_WITH*0..2]-(:User)
-        -[:FRIEND_WITH]-(person:User)-[:PLAYED_FOR]->(t:Team)<-[:HAS_TEAM]-(sT:SportTerm)
+        MATCH (subject)-[:FRIEND_WITH]-(:User)-[:FRIEND_WITH*0..2]-
+        (person:User)-[:PLAYED_FOR]->(t:Team)<-[:HAS_TEAM]-(sT:SportTerm)
         -[:PLAYED_SPORT]-(s:Sport)
         WHERE person<>subject AND sT.played = false AND s.name IN $favSports
-        WITH sT, count(person) AS score
-        MATCH (sT)-[:HAS_ADDRESS]->(a:Address)
-        MATCH (sT)<-[:CREATED_SPORT_TERM]-(u:User)
+        WITH sT, s, count(person) AS score
+        MATCH (u:User)-[:CREATED_SPORT_TERM]->(sT)-[:HAS_ADDRESS]->(a:Address)
+        OPTIONAL MATCH (sT)-[:HAS_TEAM]-(t)<-[:PLAYED_FOR]-(player)
+        WITH sT, u, a, s, score, count(player) AS numOfPlayers
         RETURN sT {
             .*,
             address: a.address,
             city: a.city,
             country: a.country,
-            score: score,
-            createdBy: u.username
+            createdBy: u.username,
+            sport: s.name,
+            numOfPlayers: numOfPlayers
         } as sT
+        ORDER BY score
     `,
       { favSports, userId }
     );

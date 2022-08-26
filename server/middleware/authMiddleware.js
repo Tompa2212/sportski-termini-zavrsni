@@ -11,6 +11,8 @@ export const authMiddleware = (req, _, next) => {
   try {
     const payload = jwt.verify(authorization.split(' ')[1], process.env.JWT_SECRET);
 
+    console.log(payload);
+
     req.user = {
       userId: payload.id,
       email: payload.email,

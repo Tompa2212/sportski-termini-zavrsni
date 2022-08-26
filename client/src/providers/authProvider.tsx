@@ -71,9 +71,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const signout = useCallback(() => {
-    setAuthState(initialState);
-    navigate('/login');
     localStorageUtil.removeItem('user');
+    setAuthState({ ...initialState, user: null });
+    navigate('/login');
   }, [navigate]);
 
   const value = {

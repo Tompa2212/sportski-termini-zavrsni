@@ -23,7 +23,7 @@ export const RegisterPage = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/sportTerms');
+      navigate('/');
     }
   }, [user, navigate]);
 

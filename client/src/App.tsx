@@ -12,6 +12,7 @@ import { Navigation } from './components/Navigation/Navigation';
 import { ApiProvider } from './providers/apiProvider';
 import { localStorageUtil } from './utils/localStorage';
 import { HomePage } from './pages/HomePage';
+import { SocialProvider } from './providers/socialProvider';
 
 const getBearerToken = () => {
   return localStorageUtil.getItem('user').token;
@@ -25,33 +26,36 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ApiProvider getBearerToken={getBearerToken}>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route
-              element={
-                <>
-                  <Navigation />
-                  <div className="container">
-                    <Outlet />
-                  </div>
-                </>
-              }
-            >
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </ApiProvider>
+          <Route
+            element={
+              <>
+                <ApiProvider getBearerToken={getBearerToken}>
+                  <SocialProvider>
+                    <Navigation />
+                    <div className="container">
+                      <Outlet />
+                    </div>
+                  </SocialProvider>
+                </ApiProvider>
+              </>
+            }
+          >
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

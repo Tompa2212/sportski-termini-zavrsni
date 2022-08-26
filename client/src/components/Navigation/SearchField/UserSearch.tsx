@@ -37,7 +37,10 @@ export const UserSearch = () => {
   useEffect(() => {
     const getUsers = async () => {
       setUsers((prev) => ({ ...prev, loading: true }));
-      const data = await makeRequest<Response>({ href: getUsersHref, type: 'GET' });
+      const data = await makeRequest<Response>({
+        href: `${getUsersHref}${debouncedValue}`,
+        type: 'GET',
+      });
 
       setUsers({ users: data?.users || [], loading: false });
     };

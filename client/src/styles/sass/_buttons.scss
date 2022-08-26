@@ -1,11 +1,19 @@
 .btn {
-  background-color: $primary;
-  color: $text-color;
+  background-color: $accent;
+  color: $white;
   border: 1px solid transparent;
-  border-radius: 0.2rem;
-  padding: 0;
-}
+  border-radius: 0.4rem;
+  padding: 0.3rem 1rem;
 
-.btn:not(:disabled) {
-  cursor: pointer;
+  &:hover:not(:disabled) {
+    background-color: $primary;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &:disabled {
+    background-color: $gray;
+  }
 }

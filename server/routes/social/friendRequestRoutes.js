@@ -10,4 +10,4 @@ export const friendRequestsRouter = express.Router();
 
 friendRequestsRouter.post('/', sendFriendRequest);
 friendRequestsRouter.delete('/:id', deleteFriendRequest);
-friendRequestsRouter.get('/:id', getUserFriendRequests);
+friendRequestsRouter.get('/', getUserFriendRequests);
