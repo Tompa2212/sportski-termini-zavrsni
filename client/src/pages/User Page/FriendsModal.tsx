@@ -9,7 +9,7 @@ export const FriendsModal: React.FC<FriendsModalProps> = ({ numOfFriends = 0 }) 
   const [show, setShow] = useState(false);
 
   return (
-    <Modal show={show} heading="Prijatelji" onHide={() => setShow(false)}>
+    <>
       <button
         className="btn btn--outline"
         style={{ padding: 0 }}
@@ -17,6 +17,9 @@ export const FriendsModal: React.FC<FriendsModalProps> = ({ numOfFriends = 0 }) 
       >
         Prijatelji: <span className="bold">{numOfFriends}</span>
       </button>
-    </Modal>
+      <Modal show={show} heading="Prijatelji" onHide={() => setShow(false)}>
+        aaaaa
+      </Modal>
+    </>
   );
 };

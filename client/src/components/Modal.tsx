@@ -27,7 +27,6 @@ export const Modal: React.FC<{
 
   return (
     <>
-      {children}
       {show && (
         <Wrapper>
           <div ref={containerRef}>
