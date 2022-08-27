@@ -77,6 +77,14 @@ h3 {
   font-weight: 700;
 }
 
+.clr--green {
+  color: #1c9b1c;
+}
+
+.clr--red {
+  color: #da2e2e;
+}
+
 body {
   color: #18191a;
   background-color: #f1f3f6;
@@ -96,11 +104,22 @@ h1 {
 .d-flex {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.d-flex.gap--s {
+  gap: 1rem;
+}
+
+.d-flex.gap--m {
+  gap: 2rem;
+}
+
+.d-flex.gap--l {
+  gap: 3rem;
 }
 
 .container {
-  max-width: 90vw;
+  max-width: 60rem;
   margin: 0 auto;
 }
 
@@ -208,9 +227,11 @@ h1 {
 }
 
 .dropdown-container__item {
-  padding: 0.5rem;
+  display: inline-block;
   border-radius: 0.7rem;
   padding: 0.5rem 1rem;
+  color: #18191a;
+  text-decoration: none;
 }
 
 .dropdown-container__item:hover {
@@ -232,16 +253,36 @@ h1 {
   padding: 0.3rem 1rem;
 }
 
-.btn:hover:not(:disabled) {
-  background-color: #3445a3;
-}
-
 .btn:not(:disabled) {
   cursor: pointer;
 }
 
+.btn:hover:not(:disabled) {
+  background-color: #3445a3;
+}
+
 .btn:disabled {
   background-color: #77859a;
+}
+
+.btn--outline {
+  background-color: #f1f3f6;
+  color: #18191a;
+}
+
+.btn--outline:hover {
+  background-color: #f1f3f6 !important;
+}
+
+.btn--white {
+  background-color: #f1f3f6;
+  color: #18191a;
+  border: 1px solid #18191a;
+}
+
+.btn--white:hover {
+  background-color: #18191a !important;
+  color: #f1f3f6;
 }
 
 .shadow {
@@ -249,12 +290,12 @@ h1 {
 }
 
 .nav {
-  max-width: 90vw;
+  max-width: 80rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 5rem;
 }
 
 .nav__center {
@@ -384,6 +425,8 @@ h1 {
   padding: 0rem;
   margin-bottom: 0.3rem;
   transition: filter 150ms ease;
+  color: #18191a;
+  text-decoration: none;
 }
 
 .menu__item:hover {

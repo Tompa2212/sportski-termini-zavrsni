@@ -13,6 +13,7 @@ import { ApiProvider } from './providers/apiProvider';
 import { localStorageUtil } from './utils/localStorage';
 import { HomePage } from './pages/HomePage';
 import { SocialProvider } from './providers/socialProvider';
+import { UserPage } from './pages/User Page/UserPage';
 
 const getBearerToken = () => {
   return localStorageUtil.getItem('user').token;
@@ -36,9 +37,7 @@ function App() {
                 <ApiProvider getBearerToken={getBearerToken}>
                   <SocialProvider>
                     <Navigation />
-                    <div className="container">
-                      <Outlet />
-                    </div>
+                    <Outlet />
                   </SocialProvider>
                 </ApiProvider>
               </>
@@ -48,11 +47,32 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <HomePage />
+                  <div className="container">
+                    <HomePage />
+                  </div>
                 </ProtectedRoute>
               }
             />
 
+            <Route
+              path="/explore"
+              element={
+                <ProtectedRoute>
+                  <div>Istraži</div>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/korisnik/:username"
+              element={
+                <ProtectedRoute>
+                  <div className="container">
+                    <UserPage />
+                  </div>
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

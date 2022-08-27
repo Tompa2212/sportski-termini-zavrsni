@@ -1,23 +1,26 @@
 import { toNativeTypes } from '../../nativeTypes.js';
 
-export const getUserSportStats = async (tx, userId) => {
-  const statsTotal = await tx.run(`
-    MATCH (u:User)-[:PLAYED_FOR]->(t)<-[:HAS_TEAM]-(sT)
-    WHERE sT.played = true
+export const getUserSportStats = async (tx, username) => {
+  const statsTotal = await tx.run(
+    `
+    MATCH (u:User {username: $username})-[:PLAYED_FOR]->(t)<-[:HAS_TEAM]-(sT)
+    WHERE sT.played = true AND t.gameResult IS NOT NULL
     WITH count(sT) AS numOfGames, count(CASE t.gameResult WHEN 'W' THEN 1 ELSE NULL END) AS winnedGames
     RETURN {
       played: numOfGames,
       won: winnedGames,
       lost: numOfGames - winnedGames
     } AS stats
-  `);
+  `,
+    { username }
+  );
 
   const statsPerSport = await tx.run(
     `
-        MATCH (u:User {id: $userId})
+        MATCH (u:User {username: $username})
         MATCH (u)-[:PLAYED_FOR]->(t)
         <-[:HAS_TEAM]-(sT)-[:PLAYED_SPORT]-(s)
-        WHERE sT.played = true
+        WHERE sT.played = true AND t.gameResult IS NOT NULL
         WITH s, count(sT) AS numOfGames, count(CASE t.gameResult WHEN 'W' THEN 1 ELSE NULL END) AS winnedGames
         RETURN {
             name: s.name,
@@ -27,7 +30,7 @@ export const getUserSportStats = async (tx, userId) => {
         } AS stats
         ORDER BY numOfGames DESC
     `,
-    { userId }
+    { username }
   );
 
   if (!statsPerSport) {

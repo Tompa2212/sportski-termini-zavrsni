@@ -26,7 +26,7 @@ const getContent = (options: User[], loading: boolean) => {
     return (
       <div className="search-field__item" key={option.id}>
         <span className="search-field__icon"></span>
-        <Link to={`/user/${option.id}`}>{option.username}</Link>
+        <Link to={`/korisnik/${option.username}`}>{option.username}</Link>
       </div>
     );
   });

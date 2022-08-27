@@ -5,15 +5,35 @@
   border-radius: 0.4rem;
   padding: 0.3rem 1rem;
 
-  &:hover:not(:disabled) {
-    background-color: $primary;
-  }
-
   &:not(:disabled) {
     cursor: pointer;
   }
 
+  &:hover:not(:disabled) {
+    background-color: $primary;
+  }
+
   &:disabled {
     background-color: $gray;
+  }
+
+  &--outline {
+    background-color: $bg-color;
+    color: $text-color;
+
+    &:hover {
+      background-color: $bg-color !important;
+    }
+  }
+
+  &--white {
+    background-color: $bg-color;
+    color: $text-color;
+    border: 1px solid $text-color;
+
+    &:hover {
+      background-color: $black !important;
+      color: $white;
+    }
   }
 }

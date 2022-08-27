@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { SettingsDropdown } from './SettingsDropdown';
 import { ReactComponent as HomeIcon } from '../../assets/icons/home.svg';
 import { ReactComponent as CreateSportTermIcon } from '../../assets/icons/createTerm.svg';
 import { ReactComponent as SportTermsIcon } from '../../assets/icons/soccer.svg';
-import { useState } from 'react';
 import { UserSearch } from './SearchField/UserSearch';
 import { Notifications } from './Notifications/Notifications';
 
@@ -27,7 +26,7 @@ const links = [
 ];
 
 export const Navigation = () => {
-  const [active, setActive] = useState(1);
+  const location = useLocation();
 
   return (
     <header className="shadow">
@@ -38,9 +37,10 @@ export const Navigation = () => {
             return (
               <li className="nav__item" key={link.id}>
                 <Link
-                  className={`nav__link ${active === link.id ? 'active' : ''}`}
+                  className={`nav__link ${
+                    location.pathname === link.to ? 'active' : ''
+                  }`}
                   to={link.to}
-                  onClick={() => setActive(link.id)}
                 >
                   {link.content}
                 </Link>

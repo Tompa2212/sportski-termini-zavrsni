@@ -22,10 +22,11 @@
   }
 
   &__item {
-    padding: 0.5rem;
-
+    display: inline-block;
     border-radius: $border-radius;
     padding: 0.5rem 1rem;
+    color: $text-color;
+    text-decoration: none;
 
     &:hover {
       background-color: $gray-very-light;

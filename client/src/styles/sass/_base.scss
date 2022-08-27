@@ -19,11 +19,20 @@ h1 {
 .d-flex {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.d-flex.gap--s {
+  gap: 1rem;
+}
+.d-flex.gap--m {
+  gap: 2rem;
+}
+.d-flex.gap--l {
+  gap: 3rem;
 }
 
 .container {
-  max-width: 90vw;
+  max-width: 60rem;
   margin: 0 auto;
 }
 

@@ -2,33 +2,36 @@ import { BadRequestError } from '../../errors/bad-request.js';
 import { NotFoundError } from '../../errors/not-found.js';
 import { getDriver } from '../../db/neo4j.js';
 import { StatusCodes } from 'http-status-codes';
-import { toNativeTypes } from '../../utils/nativeTypes.js';
 
 // POST
 // Accepting friend request
 export const addFriend = async (req, res) => {
-  const { friendRequestId } = req.body;
+  const { sender } = req.body;
   const { userId: acceptorUserId } = req.user;
+
+  console.log(sender);
 
   const session = getDriver().session();
 
   const resp = await session.writeTransaction((tx) =>
     tx.run(
       `
-    MATCH (senderUser:User)-[:SENT_FRIEND_REQUEST]->
-    (fr:FriendRequest {id: $friendRequestId})
-    <-[:HAS_FRIEND_REQUEST]-(acceptorUser:User {id: $acceptorUserId})
+    MATCH (sender:User {username: $sender})-[:SENT_FRIEND_REQUEST]->
+    (fr)
+    <-[:HAS_FRIEND_REQUEST]-(acceptor:User {id: $acceptorUserId})
 
     DETACH DELETE fr
-    WITH senderUser, acceptorUser
-    CREATE (senderUser)-[r:FRIEND_WITH]->(acceptorUser)
+    WITH sender, acceptor
+    CREATE (sender)-[r:FRIEND_WITH]->(acceptor)
     RETURN r
   `,
-      { friendRequestId, acceptorUserId }
+      { sender, acceptorUserId }
     )
   );
 
   await session.close();
+
+  console.log(resp.records[0]);
 
   if (!resp || resp.records.length === 0) {
     throw new BadRequestError('Unable to accept friend request. Please try again.');

@@ -12,7 +12,7 @@
   --gray-light: #b4beca;
   --gray-very-light: hsla(0, 0%, 88%, 1);
 
-  --red: #eb5757;
+  --red: rgb(235, 87, 87);
   --green: rgb(28, 155, 28);
 
   --bg-color: var(--white);

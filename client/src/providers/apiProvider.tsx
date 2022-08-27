@@ -118,8 +118,12 @@ export const useApi = (): MakeRequest => {
         });
 
         return result;
-      } catch (error) {
-        return null;
+      } catch (error: any) {
+        if (error.code !== 'ERR_CANCELED') {
+          throw error;
+        } else {
+          return null;
+        }
       }
     },
     [makeRequest]

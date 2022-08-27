@@ -6,46 +6,67 @@ import { toNativeTypes } from '../utils/nativeTypes.js';
 import { getUserSportStats } from '../utils/query/user/getUserSportStats.js';
 
 export const getUserInfo = async (req, res) => {
-  const { id: userId } = req.params;
+  const { id: username } = req.params;
+  const { userId: viewer } = req.user;
 
-  if (!userId) {
-    throw new BadRequestError('Please provide user id.');
+  if (!username) {
+    throw new BadRequestError('Please provide username for user.');
   }
 
   const session = getDriver().session();
 
   const user = await session.readTransaction(async (tx) => {
-    const sportStats = await getUserSportStats(tx, userId);
-
     const resp = await tx.run(
       `
-      MATCH (subject:User {id: $userId})
-      OPTIONAL MATCH (subject)-[r:FRIEND_WITH]-(person)
-      WITH subject, count(person) AS numOfFriends
+      MATCH (subject:User {username: $username})
+      MATCH (viewer:User {id: $viewer})
+      OPTIONAL MATCH (subject)-[rFr:FRIEND_WITH]-(person)
+      OPTIONAL MATCH (subject)-[rFWU:FRIEND_WITH]-(viewer)
+      OPTIONAL MATCH (subject)-[rFRS:SENT_FRIEND_REQUEST]->(frS)--(viewer)
+      OPTIONAL MATCH (subject)-[rFRH:HAS_FRIEND_REQUEST]->(frH)--(viewer)
+      WITH subject, count(person) AS numOfFriends, rFWU IS NOT NULL AS isFriendWithViewer,
+      rFRS IS NOT NULL AS sentFriendRequestToViewer, rFRH IS NOT NULL AS hasFriendRequestFromViewer
       RETURN subject {
-        .id,
         .username,
-        .email,
-        numOfFriends: numOfFriends
+        numOfFriends: numOfFriends,
+        isFriendWithViewer: isFriendWithViewer,
+        sentFriendRequestToViewer: sentFriendRequestToViewer,
+        hasFriendRequestFromViewer: hasFriendRequestFromViewer
       } AS info
     `,
-      { userId }
+      { username, viewer }
     );
 
     if (!resp || resp.records.length === 0) {
-      throw new NotFoundError(`No user with id: ${userId}`);
+      throw new NotFoundError(`No user with username: ${username}`);
     }
     const info = toNativeTypes(resp.records[0].get('info'));
 
     return {
-      info,
-      sportStats,
+      ...info,
     };
   });
 
   await session.close();
 
   res.status(StatusCodes.OK).json({ user });
+};
+
+export const getUserStats = async (req, res) => {
+  const session = getDriver().session();
+  const { id: username } = req.params;
+
+  const sportStats = await session.readTransaction(async (tx) => {
+    return await getUserSportStats(tx, username);
+  });
+
+  if (!sportStats) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: 'No user with provided username.' });
+  }
+
+  res.status(StatusCodes.OK).json({ ...sportStats });
 };
 
 export const getUsers = async (req, res) => {

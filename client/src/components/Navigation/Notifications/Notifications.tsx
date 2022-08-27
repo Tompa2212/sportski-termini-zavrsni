@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ReactComponent as NotificationIcon } from '../../../assets/icons/notification.svg';
 import { useOnClickOutside } from '../../../hooks/useOnClickOutside';
 import { useFriendRequests } from '../../../providers/socialProvider';
 
 export const Notifications = () => {
   const { friendRequests } = useFriendRequests();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(dropdownRef, () => setOpen(false));
@@ -17,16 +18,20 @@ export const Notifications = () => {
         style={{ display: 'flex', alignItems: 'center' }}
       >
         <NotificationIcon className="user-nav__icon" />
-        {friendRequests.length && (
+        {friendRequests.length > 0 ? (
           <span className="user-nav__notification">{friendRequests.length}</span>
-        )}
+        ) : null}
       </div>
 
       {open && (
         <div className="dropdown-container__dropdown">
           {friendRequests.map((item) => {
             return (
-              <div className="dropdown-container__item">
+              <Link
+                to={`/korisnik/${item.sender}`}
+                className="dropdown-container__item"
+                key={item.id}
+              >
                 <div className="d-flex" style={{ gap: '1rem' }}>
                   <span className="dropdown-container__icon"></span>
                   <p>
@@ -34,7 +39,7 @@ export const Notifications = () => {
                     prijateljstvom.
                   </p>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
