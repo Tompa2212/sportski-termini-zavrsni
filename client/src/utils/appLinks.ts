@@ -1,5 +1,3 @@
-import { Link } from '../models/Link';
-
 type AppFetchLinks = Record<string, string>;
 
 export const appRequestLinks: AppFetchLinks = {

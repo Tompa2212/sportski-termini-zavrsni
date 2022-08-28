@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Modal } from '../../components/Modal';
@@ -11,6 +12,8 @@ export const UserPage = () => {
   const user = useUser();
 
   const { username: paramUsername } = useParams();
+  const [showFriendsModal, setShowFriendsModal] = useState(false);
+
   const {
     data: userProfileData,
     status,
@@ -53,7 +56,20 @@ export const UserPage = () => {
               />
             </div>
             <div>
-              <FriendsModal numOfFriends={numOfFriends} />
+              <button
+                className="btn btn--outline"
+                style={{ padding: 0 }}
+                onClick={() => setShowFriendsModal(true)}
+              >
+                Prijatelji: <span className="bold">{numOfFriends}</span>
+              </button>
+              {showFriendsModal && (
+                <FriendsModal
+                  show={showFriendsModal}
+                  onHide={() => setShowFriendsModal(false)}
+                  {...socialInfo}
+                />
+              )}
             </div>
           </div>
         </header>

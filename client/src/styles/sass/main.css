@@ -281,8 +281,8 @@ h1 {
 }
 
 .btn--white:hover {
-  background-color: #18191a !important;
-  color: #f1f3f6;
+  background-color: #f1f3f6 !important;
+  color: #18191a;
 }
 
 .shadow {

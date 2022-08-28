@@ -9,8 +9,6 @@ export const addFriend = async (req, res) => {
   const { sender } = req.body;
   const { userId: acceptorUserId } = req.user;
 
-  console.log(sender);
-
   const session = getDriver().session();
 
   const resp = await session.writeTransaction((tx) =>
@@ -42,10 +40,10 @@ export const addFriend = async (req, res) => {
 
 // DELETE
 export const removeFriend = async (req, res) => {
-  const { id: fromUserId } = req.user;
-  const { id: toUserId } = req.params;
+  const { userId: fromUserId } = req.user;
+  const { id: username } = req.params;
 
-  if (!fromUserId || !toUserId) {
+  if (!fromUserId || !username) {
     throw new BadRequestError('Please provide required info');
   }
 
@@ -54,11 +52,11 @@ export const removeFriend = async (req, res) => {
   const resp = await session.writeTransaction((tx) =>
     tx.run(
       `
-    MATCH (fromUser:User {id:$fromUserId})-[r:FRIEND_WITH]-(toUser:User {id:$toUserId})
+    MATCH (fromUser:User {id: $fromUserId})-[r:FRIEND_WITH]-(toUser:User {username: $username})
     DELETE r
     RETURN fromUser, toUser
   `,
-      { fromUserId, toUserId }
+      { fromUserId, username }
     )
   );
 
@@ -72,32 +70,36 @@ export const removeFriend = async (req, res) => {
 };
 
 export const getUserFriends = async (req, res) => {
-  const { id: userId } = req.params;
+  const { id: username } = req.params;
+  const { userId: viewer } = req.user;
 
   const session = getDriver().session();
 
   const resp = await session.readTransaction(async (tx) =>
     tx.run(
       `
-    MATCH (u:User {id: $userId})
+    MATCH (u:User {username: $username})
+    MATCH (viewer:User {id: $viewer})
     OPTIONAL MATCH (u)-[:FRIEND_WITH]-(fr:User)
+    OPTIONAL MATCH (viewer)-[r:FRIEND_WITH]-(fr)
+    WITH fr, r IS NOT NULL AS friendWithViewer
     RETURN fr {
       .id,
-      .username
+      .username,
+      friendWithViewer: friendWithViewer
     } as fr
   `,
-      { userId }
+      { username, viewer }
     )
   );
 
   await session.close();
 
   if (!resp || resp.records.length === 0) {
-    throw new NotFoundError(`No user with id: ${userId}`);
+    throw new NotFoundError(`No user with id: ${username}`);
   }
 
   return res.status(StatusCodes.OK).json({
-    userId,
     friends: resp.records.flatMap((row) => {
       const friend = row.get('fr');
 

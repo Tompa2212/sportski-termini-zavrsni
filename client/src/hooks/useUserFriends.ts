@@ -2,16 +2,21 @@ import { useCallback, useEffect, useState } from 'react';
 import { BaseUser } from '../models/user';
 import { useApi } from '../providers/apiProvider';
 import { appRequestLinks } from '../utils/appLinks';
+import { useExecuteAction } from './useExecuteAction';
+
+export type FriendsData = BaseUser & { friendWithViewer: boolean };
 
 interface Response {
-  friends: BaseUser[];
+  friends: FriendsData[];
 }
 
 const friendsHref = appRequestLinks.friends;
 
-export const useUserFriends = (userId: string) => {
-  const [friends, setFriends] = useState<BaseUser[]>([]);
+export const useUserFriends = (userId: string | undefined) => {
+  const [friends, setFriends] = useState<FriendsData[]>([]);
+  const [refresh, setRefresh] = useState({});
   const makeRequest = useApi();
+  const executeAction = useExecuteAction();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,27 +38,29 @@ export const useUserFriends = (userId: string) => {
     if (userId) {
       fetchData();
     }
-  }, [makeRequest, userId]);
+  }, [makeRequest, userId, refresh]);
+
+  const triggerRefresh = useCallback(() => {
+    setRefresh((prev) => ({ ...prev }));
+  }, []);
 
   const removeFriend = useCallback(
-    async (userId: string) => {
-      const response = await makeRequest({
-        href: `${friendsHref}${userId}`,
-        type: 'DELETE',
+    async (username: string | undefined) => {
+      await executeAction({
+        link: {
+          href: `${friendsHref}${username}`,
+          type: 'DELETE',
+        },
+        onComplete: triggerRefresh,
       });
-
-      if (response) {
-        return true;
-      }
-
-      return false;
     },
 
-    [makeRequest]
+    [executeAction, triggerRefresh]
   );
 
   return {
     friends,
     removeFriend,
+    triggerRefresh,
   };
 };
