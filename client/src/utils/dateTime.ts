@@ -23,3 +23,19 @@ export const toLocaleTimeString = (value: string) => {
     return value;
   }
 };
+
+export const toDateString = (date: Date) => {
+  const prepend = (strNumber: string) => {
+    if (strNumber.length === 1) {
+      return `0${strNumber}`;
+    }
+
+    return strNumber;
+  };
+
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+
+  return `${year}-${prepend(month.toString())}-${prepend(day.toString())}`;
+};

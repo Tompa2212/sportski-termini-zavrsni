@@ -17,6 +17,7 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.184",
+    "@types/react-datepicker": "^4.4.2",
     "@types/styled-components": "^5.1.26"
   }
 }

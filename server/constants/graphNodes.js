@@ -22,3 +22,5 @@ export const sportTermFilterableProps = [
   'city',
   'country',
 ];
+
+export const allowedUserProps = ['username', 'email', 'password'];

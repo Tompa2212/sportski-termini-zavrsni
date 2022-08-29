@@ -1,10 +1,11 @@
 type AppFetchLinks = Record<string, string>;
 
 export const appRequestLinks: AppFetchLinks = {
+  sportTerms: 'http://localhost:3000/api/v1/sportTerms/',
   recommendedSportTerms: 'http://localhost:3000/api/v1/sportTerms/recommendations',
   getUsers: 'http://localhost:3000/api/v1/users?username=',
-  friendRequests: 'http://localhost:3000/api/v1/friendRequests',
-  friends: 'http://localhost:3000/api/v1/friends/',
   user: 'http://localhost:3000/api/v1/users/',
   userSportStats: 'http://localhost:3000/api/v1/users/stats/',
+  friendRequests: 'http://localhost:3000/api/v1/friendRequests',
+  friends: 'http://localhost:3000/api/v1/friends/',
 };

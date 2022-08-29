@@ -21,7 +21,7 @@ function createValidator(schema: Object) {
 
     const errors =
       validator.errors
-        ?.filter((error) => error.keyword !== 'type')
+        ?.filter((error) => error.keyword !== 'type' && error.keyword !== 'format')
         .map((error) => {
           if (error.keyword === 'required') {
             error.message = 'Obavezno polje';
@@ -36,7 +36,9 @@ function createValidator(schema: Object) {
           return error;
         }) || [];
 
-    return errors.length ? { details: validator.errors } : null;
+    console.log(errors);
+
+    return errors.length ? { details: errors } : null;
   };
 }
 

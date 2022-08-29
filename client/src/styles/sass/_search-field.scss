@@ -36,6 +36,7 @@
 
   &__dropdown {
     position: absolute;
+    z-index: 999;
     top: 3rem;
     width: 300px;
     padding: 1rem;

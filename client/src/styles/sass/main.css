@@ -106,6 +106,10 @@ h1 {
   align-items: center;
 }
 
+.d-flex.justify-content-between {
+  justify-content: space-between;
+}
+
 .d-flex.gap--s {
   gap: 1rem;
 }
@@ -121,6 +125,7 @@ h1 {
 .container {
   max-width: 60rem;
   margin: 0 auto;
+  padding: 3rem 0;
 }
 
 .w-100 {
@@ -146,7 +151,8 @@ h1 {
   left: 3px;
 }
 
-.form-control input {
+.form-control input,
+.form-control textarea {
   font-family: inherit;
   font-size: inherit;
   width: 100%;
@@ -295,7 +301,6 @@ h1 {
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
-  margin-bottom: 5rem;
 }
 
 .nav__center {
@@ -398,6 +403,7 @@ h1 {
 
 .dropdown {
   position: absolute;
+  z-index: 999;
   top: 58px;
   max-width: 300px;
   width: 20vw;
@@ -488,6 +494,7 @@ h1 {
 
 .search-field__dropdown {
   position: absolute;
+  z-index: 999;
   top: 3rem;
   width: 300px;
   padding: 1rem;

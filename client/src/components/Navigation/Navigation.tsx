@@ -14,13 +14,13 @@ const links = [
   },
   {
     id: 3,
-    to: '/explore',
+    to: '/istrazi',
     content: <SportTermsIcon className="nav__icon" />,
   },
 
   {
     id: 4,
-    to: '/create',
+    to: '/kreiraj',
     content: <CreateSportTermIcon className="nav__icon" />,
   },
 ];

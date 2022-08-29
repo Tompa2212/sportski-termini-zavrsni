@@ -11,11 +11,11 @@ export const SportTermItem: React.FC<SportTermItemProps> = ({ sportTerm }) => {
   return (
     <Wrapper open={sportTerm.played === false}>
       <div className="heading">
-        <div className="d-flex">
+        <div className="d-flex justify-content-between">
           <h3>{sportTerm.sport}</h3>
           <span className="status">{sportTerm.played ? 'ZATVOREN' : 'OTVOREN'}</span>
         </div>
-        <div className="d-flex">
+        <div className="d-flex justify-content-between">
           <span>
             {sportTerm.city}, {sportTerm.address}
           </span>
@@ -70,6 +70,10 @@ const Wrapper = styled.article<{ open: boolean }>`
 
   .info {
     margin-bottom: 1.8rem;
+
+    > div {
+      justify-content: space-between;
+    }
 
     > div:not(:last-child) {
       padding-bottom: 0.7rem;

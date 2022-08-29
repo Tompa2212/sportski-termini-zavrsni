@@ -19,8 +19,8 @@ export const useExecuteAction = () => {
         await makeRequest(link, { body, params });
 
         onComplete();
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        alert(error.message);
       }
     },
     [makeRequest]

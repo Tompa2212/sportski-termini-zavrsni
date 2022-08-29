@@ -4,6 +4,8 @@ import { BadRequestError } from '../errors/bad-request.js';
 import { NotFoundError } from '../errors/not-found.js';
 import { toNativeTypes } from '../utils/nativeTypes.js';
 import { getUserSportStats } from '../utils/query/user/getUserSportStats.js';
+import { allowedUserProps } from '../constants/graphNodes.js';
+import { setUserFavoriteLocations, setUserFavoriteSports } from '../utils/query.js';
 
 export const getUserInfo = async (req, res) => {
   const { id: username } = req.params;
@@ -93,4 +95,45 @@ export const getUsers = async (req, res) => {
   const users = resp.records.map((row) => row.get('u'));
 
   res.status(StatusCodes.OK).json({ users });
+};
+
+export const updateUser = async (req, res) => {
+  const { userId } = req.user;
+  const {favoriteSports, favoriteLocations, ...baseUserProps} = req.body;
+
+  const session = getDriver().session();
+
+  const resp = await session.writeTransaction((tx) => {
+
+    if(favoriteSports) {
+      await setUserFavoriteSports(tx, userId, favoriteSports)
+    }
+
+    if(favoriteLocations) {
+      await setUserFavoriteLocations(tx, userId, favoriteLocations)
+    }
+
+    return await tx.run(
+      `
+        MATCH (u:User {id: $userId})
+        SET u += $updatedProperties
+        RETURN u {
+          .*
+        }
+        
+  `,
+      { userId, updatedProperties: cleanObject(baseUserProps, allowedUserProps) }
+    )
+  }
+  );
+
+  if (!resp || resp.records.length === 0) {
+    throw new Error('unable to update user');
+  }
+
+  await session.close();
+
+  const user = resp.records[0].get('u');
+
+  res.status(StatusCodes.OK).json({ user });
 };

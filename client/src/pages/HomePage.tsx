@@ -7,10 +7,10 @@ export const HomePage: React.FC = () => {
   const { data: sportTerms, loading } = useRecommendedSportTerms();
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <h1>Učitavanje...</h1>;
   }
 
-  if (!loading && sportTerms.length === 0) {
+  if (!loading && sportTerms && sportTerms.length === 0) {
     return (
       <>
         <h2>Trenutno nemamo preporučenih sportskih termina za Vas.</h2>
@@ -23,15 +23,8 @@ export const HomePage: React.FC = () => {
 
   return (
     <section className="sport-term-grid">
-      {sportTerms.map((sportTerm) => {
-        return (
-          <>
-            <SportTermItem sportTerm={sportTerm} key={sportTerm.id} />
-            <SportTermItem sportTerm={sportTerm} key={sportTerm.id} />
-            <SportTermItem sportTerm={sportTerm} key={sportTerm.id} />
-            <SportTermItem sportTerm={sportTerm} key={sportTerm.id} />
-          </>
-        );
+      {sportTerms?.map((sportTerm) => {
+        return <SportTermItem sportTerm={sportTerm} key={sportTerm.id} />;
       })}
     </section>
   );

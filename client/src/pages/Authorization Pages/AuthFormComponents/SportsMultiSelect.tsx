@@ -26,7 +26,7 @@ const transformToSport = (options: MultiValue<SportOption>) =>
 
 const getSportsUrl = 'http://localhost:3000/api/v1/sports';
 
-const SportsMultiSelect = ({ onChange, value }: ConnectedFieldProps<any>) => {
+const SportsMultiSelect = ({ onChange, value, label }: ConnectedFieldProps<any>) => {
   const [sportOptions, setSportOptions] = useState<SportOption[]>([]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const SportsMultiSelect = ({ onChange, value }: ConnectedFieldProps<any>) => {
 
   return (
     <div className="form-control">
-      <label className="form-label">Najdraži sportovi</label>
+      <label className="form-label">{label}</label>
       <Select
         options={sportOptions}
         value={transformToOptions(value)}

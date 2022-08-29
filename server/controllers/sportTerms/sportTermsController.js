@@ -140,6 +140,7 @@ export const createSportTerm = async (req, res) => {
         comment: $comment 
     })-[:PLAYED_SPORT]->(s)
     MERGE (u)-[:CREATED_SPORT_TERM]->(sT)
+    CREATE (t1:Team {name: "Tim A"})-<[:HAS_TEAM]-(st)-[:HAS_TEAM]->(t2:Team {name :"Tim B"})
     RETURN sT {
       .*,
       playDate: apoc.temporal.format( sT.playDate, '${dateFormat}'),

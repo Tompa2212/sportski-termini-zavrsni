@@ -15,11 +15,11 @@ interface Props {
 
 const getContent = (options: User[], loading: boolean) => {
   if (options.length === 0 && loading) {
-    return <div>Loading...</div>;
+    return <div>Tražim...</div>;
   }
 
   if (options.length === 0 && !loading) {
-    return <div>No users found</div>;
+    return <div>Korisnik nije pronađen</div>;
   }
 
   return options.map((option) => {

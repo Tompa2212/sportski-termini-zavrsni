@@ -14,6 +14,8 @@ import { localStorageUtil } from './utils/localStorage';
 import { HomePage } from './pages/HomePage';
 import { SocialProvider } from './providers/socialProvider';
 import { UserPage } from './pages/User Page/UserPage';
+import { SportTermCreate } from './pages/Sport Term Create/SportTermCreate';
+import { UserEditPage } from './pages/User Edit Page/UserEditPage';
 
 const getBearerToken = () => {
   return localStorageUtil.getItem('user').token;
@@ -64,11 +66,33 @@ function App() {
             />
 
             <Route
+              path="/kreiraj"
+              element={
+                <ProtectedRoute>
+                  <div className="container">
+                    <SportTermCreate />
+                  </div>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
               path="/korisnik/:username"
               element={
                 <ProtectedRoute>
                   <div className="container">
                     <UserPage />
+                  </div>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/racun/uredi"
+              element={
+                <ProtectedRoute>
+                  <div className="container">
+                    <UserEditPage />
                   </div>
                 </ProtectedRoute>
               }

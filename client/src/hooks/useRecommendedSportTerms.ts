@@ -11,12 +11,12 @@ interface ResponseData {
 }
 
 interface UseRecommendedSportTermsReturn {
-  data: SportTerm[];
+  data: SportTerm[] | null;
   loading: boolean;
 }
 
 const initialState: UseRecommendedSportTermsReturn = {
-  data: [],
+  data: null,
   loading: false,
 };
 

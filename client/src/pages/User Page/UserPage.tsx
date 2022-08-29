@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Modal } from '../../components/Modal';
 import { useUserProfileInfo } from '../../hooks/useUserProfileInfo';
 import { useUser } from '../../providers/authProvider';
 import { FriendsModal } from './FriendsModal';

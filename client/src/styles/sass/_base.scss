@@ -21,6 +21,10 @@ h1 {
   align-items: center;
 }
 
+.d-flex.justify-content-between {
+  justify-content: space-between;
+}
+
 .d-flex.gap--s {
   gap: 1rem;
 }
@@ -34,6 +38,7 @@ h1 {
 .container {
   max-width: 60rem;
   margin: 0 auto;
+  padding: 3rem 0;
 }
 
 .w-100 {

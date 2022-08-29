@@ -64,6 +64,7 @@ export const UserSearch = () => {
         type="text"
         id="search-field"
         placeholder="Pretraži korisnike"
+        autoComplete="off"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         onClick={() => setOpen(true)}
