@@ -64,6 +64,11 @@ export const createTermSchema = {
       format: 'time',
       uniforms: { component: TextInput },
     },
+    playDuration: {
+      type: 'number',
+      format: 'integer',
+      uniforms: { component: TextInput },
+    },
     address: {
       type: 'string',
       uniforms: { component: TextInput },
@@ -93,6 +98,7 @@ export const createSportTermLayout = [
       { name: 'pricePerPerson', label: 'Cijena po osobi' },
       { name: 'playDate', label: 'Datum igranja' },
       { name: 'playTime', label: 'Vrijeme igranja' },
+      { name: 'playDuration', label: 'Vrijeme trajanja termina' },
       { name: 'teamGame', label: 'Ekipno' },
       { name: 'playersPerTeam', label: 'Broj igrača po ekipi' },
     ],

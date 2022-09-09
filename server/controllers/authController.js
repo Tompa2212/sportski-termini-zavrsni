@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 import { getDriver } from '../db/neo4j.js';
 
 export const register = async (req, res) => {
-  const { username, password: plainPassword, email, favoriteSports } = req.body;
+  const { username, password: plainPassword, email } = req.body;
 
   if (!username || !plainPassword || !email) {
     throw new BadRequestError('Please provide username, password, and email');
@@ -20,18 +20,13 @@ export const register = async (req, res) => {
   const resp = await session.writeTransaction((tx) =>
     tx.run(
       `
-      CREATE (u:User {id: randomUuid(), username: $username, password:$password, email:$email})
-      WITH u
-      UNWIND $favoriteSports as sports
-      MATCH (s:Sport { name:sports.name})
-      CREATE (u)-[:HAS_FAVORITE_SPORT]->(s)
+      CREATE (u:User {id: randomUuid(), username: $username, password:$password, email:$email, initializationFinished: false})
       RETURN u
   `,
       {
         username,
         password: hashedPassword,
         email,
-        favoriteSports: favoriteSports || [],
       }
     )
   );

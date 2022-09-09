@@ -4,8 +4,7 @@ export const appRequestLinks: AppFetchLinks = {
   sportTerms: 'http://localhost:3000/api/v1/sportTerms/',
   recommendedSportTerms: 'http://localhost:3000/api/v1/sportTerms/recommendations',
   getUsers: 'http://localhost:3000/api/v1/users?username=',
-  user: 'http://localhost:3000/api/v1/users/',
-  userSportStats: 'http://localhost:3000/api/v1/users/stats/',
+  users: 'http://localhost:3000/api/v1/users/',
   friendRequests: 'http://localhost:3000/api/v1/friendRequests',
   friends: 'http://localhost:3000/api/v1/friends/',
 };

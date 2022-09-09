@@ -3,7 +3,7 @@ import { UserProfile } from '../models/user';
 import { useApi } from '../providers/apiProvider';
 import { appRequestLinks } from '../utils/appLinks';
 
-const userHref = appRequestLinks.user;
+const userHref = appRequestLinks.users;
 
 interface ResponseData {
   user: UserProfile;

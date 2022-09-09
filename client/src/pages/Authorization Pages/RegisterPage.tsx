@@ -14,18 +14,20 @@ const error = false;
 const authError = 'Invalid credentials';
 
 export const RegisterPage = () => {
-  const { register, user, loading } = useAuth();
+  const { register, user } = useAuth();
   const navigate = useNavigate();
+
+  const initializationNeeded = user && !user.initializationFinished;
 
   const onSubmit = async (model: Record<string, any>) => {
     await register(model);
   };
 
   useEffect(() => {
-    if (user) {
-      navigate('/');
+    if (initializationNeeded) {
+      navigate('/inicijalizacija');
     }
-  }, [user, navigate]);
+  }, [initializationNeeded, navigate]);
 
   return (
     <Wrapper>
@@ -54,8 +56,8 @@ export const RegisterPage = () => {
               <SubmitField title="Registracija" className="btn form-submit-btn" />
               <p>
                 Već imaš korisnički račun?{' '}
-                <Link to="/register" className="register-link">
-                  {loading ? 'Obrada...' : 'Prijava'}
+                <Link to="/login" className="register-link">
+                  Prijava
                 </Link>
               </p>
             </div>

@@ -7,9 +7,10 @@ export const Modal: React.FC<{
   children: React.ReactNode;
   heading?: React.ReactNode;
   style?: React.CSSProperties;
+  className?: string;
   show: boolean;
   onHide: () => void;
-}> = ({ children, heading, show, onHide, style }) => {
+}> = ({ children, heading, show, onHide, style, className }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export const Modal: React.FC<{
               <h4>{heading}</h4>
               <CloseIcon onClick={onHide} cursor="pointer" />
             </div>
-            <div className="content" style={style}>
+            <div className={`content ${className}`} style={style}>
               {children}
             </div>
           </div>

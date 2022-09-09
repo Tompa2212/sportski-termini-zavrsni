@@ -1,15 +1,18 @@
 import express from 'express';
 import {
   getUserInfo,
-  getUsers,
-  getUserStats,
+  initializeUser,
+  searchUsers,
   updateUser,
-} from '../controllers/userController.js';
+} from '../controllers/user/userController.js';
+import { getUserStats } from '../controllers/user/userStatsController.js';
 
 export const userRouter = express.Router();
 
-userRouter.get('/', getUsers);
-userRouter.get('/:id', getUserInfo);
-userRouter.get('/stats/:id', getUserStats);
+userRouter.get('/', searchUsers);
 
-userRouter.get('/edit', updateUser);
+userRouter.get('/:id', getUserInfo);
+userRouter.patch('/:id', updateUser);
+userRouter.post('/initialize', initializeUser);
+
+userRouter.get('/:id/stats', getUserStats);

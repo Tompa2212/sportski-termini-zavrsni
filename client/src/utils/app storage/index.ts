@@ -16,7 +16,7 @@ const removeItem = (key: string) => {
   localStorage.removeItem(key);
 };
 
-export const localStorageUtil = {
+export const appStorage = {
   getItem,
   setItem,
   removeItem,

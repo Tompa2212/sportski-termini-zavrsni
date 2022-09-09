@@ -1,5 +1,4 @@
 import TextInput from '../components/FormFields/TextInput';
-import SportsMultiSelect from '../pages/Authorization Pages/AuthFormComponents/SportsMultiSelect';
 
 export const registerSchema = {
   title: 'Register',
@@ -25,10 +24,6 @@ export const registerSchema = {
       const: { $data: '1/password' },
       uniforms: { type: 'password', component: TextInput },
     },
-    favoriteSports: {
-      type: 'object',
-      uniforms: { component: SportsMultiSelect },
-    },
   },
 
   required: ['username', 'email', 'password', 'confirmPassword'],
@@ -39,5 +34,4 @@ export const registerFormFields = [
   { name: 'email', label: 'Email' },
   { name: 'password', label: 'Lozinka' },
   { name: 'confirmPassword', label: 'Potvrdi lozinku' },
-  { name: 'favoriteSports', label: 'Najdraži sportovi' },
 ];

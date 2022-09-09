@@ -35,8 +35,8 @@ app.use('/api/v1/friendRequests', authMiddleware, friendRequestsRouter);
 app.use('/api/v1/users', authMiddleware, userRouter);
 app.use('/api/v1/sports', sportsRouter);
 
-app.use(errorHandlerMiddleware);
 app.use(notFound);
+app.use(errorHandlerMiddleware);
 
 const init = async () => {
   try {

@@ -1,13 +1,19 @@
-import React from 'react';
 import Select from 'react-select';
 import { ConnectedFieldProps, connectField } from 'uniforms';
 
-const SelectField = ({
-  value,
-  onChange,
-  options,
-  label,
-}: ConnectedFieldProps<any>) => {
+const SelectField = ({ onChange, options, label }: ConnectedFieldProps<any>) => {
+  const onChangeWrapper = (value: any) => {
+    if (!onChange) {
+      return;
+    }
+
+    if (value === null) {
+      onChange(null);
+    } else {
+      onChange(value);
+    }
+  };
+
   return (
     <div className="form-control">
       <label htmlFor="" className="form-label">
@@ -33,7 +39,8 @@ const SelectField = ({
             },
           }),
         }}
-        onChange={(value: any) => onChange && onChange(value.value)}
+        onChange={onChangeWrapper}
+        isClearable={true}
       />
     </div>
   );

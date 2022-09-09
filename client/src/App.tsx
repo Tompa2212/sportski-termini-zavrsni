@@ -10,15 +10,16 @@ import { ProtectedRoute } from './pages/ProtectedRoute';
 import { RegisterPage } from './pages/Authorization Pages/RegisterPage';
 import { Navigation } from './components/Navigation/Navigation';
 import { ApiProvider } from './providers/apiProvider';
-import { localStorageUtil } from './utils/localStorage';
+import { appStorage } from './utils/app storage';
 import { HomePage } from './pages/HomePage';
 import { SocialProvider } from './providers/socialProvider';
 import { UserPage } from './pages/User Page/UserPage';
 import { SportTermCreate } from './pages/Sport Term Create/SportTermCreate';
 import { UserEditPage } from './pages/User Edit Page/UserEditPage';
+import { InitalizeUserModal } from './pages/User Initialize/InitalizeUserModal';
 
 const getBearerToken = () => {
-  return localStorageUtil.getItem('user').token;
+  return appStorage.getItem('user')?.token;
 };
 
 function App() {
@@ -97,6 +98,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/inicijalizacija" element={<InitalizeUserModal />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

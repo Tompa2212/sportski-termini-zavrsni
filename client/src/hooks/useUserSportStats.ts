@@ -4,7 +4,9 @@ import { UserSportStats } from '../models/user';
 import { useApi } from '../providers/apiProvider';
 import { appRequestLinks } from '../utils/appLinks';
 
-const sportStatsHref = appRequestLinks.userSportStats;
+const sportStatsBaseHref = appRequestLinks.users;
+
+const createSportStatsHref = (user: string) => `${sportStatsBaseHref}/${user}/stats`;
 
 export const useUserSportStats = () => {
   const { username: visitedUser } = useParams();
@@ -14,7 +16,7 @@ export const useUserSportStats = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await makeRequest<UserSportStats>({
-        href: `${sportStatsHref}${visitedUser}`,
+        href: createSportStatsHref(visitedUser!),
         type: 'GET',
       });
 

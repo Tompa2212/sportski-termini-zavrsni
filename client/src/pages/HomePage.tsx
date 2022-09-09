@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRecommendedSportTerms } from '../hooks/useRecommendedSportTerms';
+
 import { SportTermItem } from './SportTerms/components/SportTermItem';
 
 export const HomePage: React.FC = () => {

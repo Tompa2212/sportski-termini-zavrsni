@@ -49,10 +49,11 @@ export const setUserFavoriteSports = async (tx, userId, favoriteSports) => {
         MATCH (u:User {id: $userId})
         WITH u
         UNWIND $favoriteSports AS sport
-        CREATE (u)-[:HAS_FAVORITE_SPORT]->(s {name: sport})
+        MATCH (s:Sport {name: sport})
+        CREATE (u)-[:HAS_FAVORITE_SPORT]->(s)
 
     `,
-      { teamId, favoriteSports }
+      { userId, favoriteSports }
     );
   } catch (error) {
     throw error;
@@ -79,7 +80,7 @@ export const setUserFavoriteLocations = async (tx, userId, favoriteLocations) =>
         CREATE (u)-[:HAS_FAVORITE_LOCATION]->(a)
 
     `,
-      { teamId, favoriteLocations }
+      { userId, favoriteLocations }
     );
   } catch (error) {
     throw error;

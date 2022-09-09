@@ -1,11 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
-import { getDriver } from '../db/neo4j.js';
-import { BadRequestError } from '../errors/bad-request.js';
-import { NotFoundError } from '../errors/not-found.js';
-import { toNativeTypes } from '../utils/nativeTypes.js';
-import { getUserSportStats } from '../utils/query/user/getUserSportStats.js';
-import { allowedUserProps } from '../constants/graphNodes.js';
-import { setUserFavoriteLocations, setUserFavoriteSports } from '../utils/query.js';
+import { getDriver } from '../../db/neo4j.js';
+import { BadRequestError } from '../../errors/bad-request.js';
+import { NotFoundError } from '../../errors/not-found.js';
+import { toNativeTypes } from '../../utils/nativeTypes.js';
+import { allowedUserProps } from '../../constants/graphNodes.js';
+import {
+  setUserFavoriteLocations,
+  setUserFavoriteSports,
+} from '../../utils/query.js';
 
 export const getUserInfo = async (req, res) => {
   const { id: username } = req.params;
@@ -54,24 +56,7 @@ export const getUserInfo = async (req, res) => {
   res.status(StatusCodes.OK).json({ user });
 };
 
-export const getUserStats = async (req, res) => {
-  const session = getDriver().session();
-  const { id: username } = req.params;
-
-  const sportStats = await session.readTransaction(async (tx) => {
-    return await getUserSportStats(tx, username);
-  });
-
-  if (!sportStats) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: 'No user with provided username.' });
-  }
-
-  res.status(StatusCodes.OK).json({ ...sportStats });
-};
-
-export const getUsers = async (req, res) => {
+export const searchUsers = async (req, res) => {
   const { username } = req.query;
 
   const session = getDriver().session();
@@ -99,18 +84,17 @@ export const getUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { userId } = req.user;
-  const {favoriteSports, favoriteLocations, ...baseUserProps} = req.body;
+  const { favoriteSports, favoriteLocations, ...baseUserProps } = req.body;
 
   const session = getDriver().session();
 
-  const resp = await session.writeTransaction((tx) => {
-
-    if(favoriteSports) {
-      await setUserFavoriteSports(tx, userId, favoriteSports)
+  const resp = await session.writeTransaction(async (tx) => {
+    if (favoriteSports) {
+      await setUserFavoriteSports(tx, userId, favoriteSports);
     }
 
-    if(favoriteLocations) {
-      await setUserFavoriteLocations(tx, userId, favoriteLocations)
+    if (favoriteLocations) {
+      await setUserFavoriteLocations(tx, userId, favoriteLocations);
     }
 
     return await tx.run(
@@ -123,9 +107,8 @@ export const updateUser = async (req, res) => {
         
   `,
       { userId, updatedProperties: cleanObject(baseUserProps, allowedUserProps) }
-    )
-  }
-  );
+    );
+  });
 
   if (!resp || resp.records.length === 0) {
     throw new Error('unable to update user');
@@ -136,4 +119,36 @@ export const updateUser = async (req, res) => {
   const user = resp.records[0].get('u');
 
   res.status(StatusCodes.OK).json({ user });
+};
+
+export const initializeUser = async (req, res) => {
+  const { userId } = req.user;
+  const { favoriteSports } = req.body;
+
+  const session = getDriver().session();
+
+  const resp = await session.writeTransaction(async (tx) => {
+    if (favoriteSports) {
+      await setUserFavoriteSports(tx, userId, favoriteSports);
+    }
+
+    const user = await tx.run(
+      `
+      MATCH (u:User {id: $userId})
+      SET u.initializationFinished = true
+      RETURN u
+    `,
+      { userId }
+    );
+
+    return user.records ? user.records[0].get('u') : null;
+  });
+
+  await session.close();
+
+  if (!resp) {
+    throw new Error('unable to update user');
+  }
+
+  res.status(StatusCodes.OK).json({ initialized: true });
 };
