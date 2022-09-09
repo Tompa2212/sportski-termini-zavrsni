@@ -11,6 +11,10 @@ export const Notifications = () => {
 
   useOnClickOutside(dropdownRef, () => setOpen(false));
 
+  if (!friendRequests) {
+    return null;
+  }
+
   return (
     <div className="dropdown-container" ref={dropdownRef}>
       <div
@@ -19,7 +23,9 @@ export const Notifications = () => {
       >
         <NotificationIcon className="user-nav__icon" />
         {friendRequests.length > 0 ? (
-          <span className="user-nav__notification">{friendRequests.length}</span>
+          <span className="user-nav__notification">
+            {friendRequests && friendRequests.length}
+          </span>
         ) : null}
       </div>
 

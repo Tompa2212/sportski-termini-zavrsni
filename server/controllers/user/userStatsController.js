@@ -1,3 +1,7 @@
+import { getDriver } from '../../db/neo4j.js';
+import { getUserSportStats } from '../../utils/query/user/getUserSportStats.js';
+import { StatusCodes } from 'http-status-codes';
+
 export const getUserStats = async (req, res) => {
   const session = getDriver().session();
   const { id: username } = req.params;

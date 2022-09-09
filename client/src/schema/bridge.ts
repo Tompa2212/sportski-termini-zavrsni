@@ -21,7 +21,7 @@ function createValidator(schema: Object) {
 
     const errors =
       validator.errors
-        ?.filter((error) => error.keyword !== 'type' && error.keyword !== 'format')
+        ?.filter((error) => error.keyword !== 'type')
         .map((error) => {
           if (error.keyword === 'required') {
             error.message = 'Obavezno polje';
@@ -31,12 +31,17 @@ function createValidator(schema: Object) {
             error.message = 'Netočna email adresa';
           }
 
+          if (
+            error.keyword === 'const' &&
+            error.instancePath.includes('confirmPassword')
+          ) {
+            error.message = 'Lozinke moraju biti jednake';
+          }
+
           error.message = capitalize(error.message);
 
           return error;
         }) || [];
-
-    console.log(errors);
 
     return errors.length ? { details: errors } : null;
   };
