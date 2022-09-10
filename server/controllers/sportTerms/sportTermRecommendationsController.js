@@ -4,7 +4,8 @@ import { toNativeTypes } from '../../utils/nativeTypes.js';
 import { getUserFavSports } from '../../utils/query/user/getUserFavSports.js';
 
 export const getRecommendedSportTerms = async (req, res) => {
-  const { id: userId } = req.params;
+  const { userId } = req.user;
+
   const session = getDriver().session();
 
   const sportTerms = await session.readTransaction(async (tx) => {
@@ -15,14 +16,15 @@ export const getRecommendedSportTerms = async (req, res) => {
         MATCH (subject:User {id: $userId})
         MATCH (subject)-[:FRIEND_WITH]-(:User)-[:FRIEND_WITH*0..2]-
         (person:User)-[:PLAYED_FOR]->(t:Team)<-[:HAS_TEAM]-(sT:SportTerm)
-        -[:PLAYED_SPORT]-(s:Sport)
+        -[:PLAYED_SPORT]->(s:Sport)
         MATCH (sT)<-[:CREATED_SPORT_TERM]-(creator:User)
-        WHERE person<>subject AND sT.played = false AND s.name IN $favSports
-              AND creator<>subject
-        WITH sT, s, creator, count(person) AS score
         MATCH (sT)-[:HAS_ADDRESS]->(a:Address)
-        OPTIONAL MATCH (sT)-[:HAS_TEAM]-(t)<-[:PLAYED_FOR]-(player)
-        WITH sT, creator, a, s, score, count(player) AS numOfPlayers
+        OPTIONAL MATCH (sT)-[:HAS_TEAM]->(t)<-[:PLAYED_FOR]-(player)
+        WHERE person <> subject AND sT.played = false
+        AND s.name IN $favSports AND creator <> subject
+        WITH subject, sT, s, a, creator, count(person) AS score,
+        collect(player) AS players, count(player) AS numOfPlayers
+        WHERE NOT subject IN players
         RETURN sT {
             .*,
             address: a.address,
@@ -32,7 +34,7 @@ export const getRecommendedSportTerms = async (req, res) => {
             sport: s.name,
             numOfPlayers: numOfPlayers
         } as sT
-        ORDER BY score
+        ORDER BY score DESC
     `,
       { favSports, userId }
     );

@@ -13,7 +13,6 @@ export const authMiddleware = (req, _, next) => {
 
     req.user = {
       userId: payload.id,
-      email: payload.email,
       username: payload.username,
     };
 

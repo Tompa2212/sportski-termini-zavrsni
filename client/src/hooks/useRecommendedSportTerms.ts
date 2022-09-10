@@ -30,7 +30,7 @@ export const useRecommendedSportTerms = (): UseRecommendedSportTermsReturn => {
     const fetchData = async () => {
       setData((prev) => ({ ...prev, loading: true }));
       const response = await makeRequest<ResponseData>({
-        href: `${getRecommendedSportTermsHref}/${user?.id}`,
+        href: getRecommendedSportTermsHref,
         type: 'GET',
       });
 

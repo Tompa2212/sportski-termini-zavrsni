@@ -8,8 +8,10 @@ interface SportTermItemProps {
 }
 
 export const SportTermItem: React.FC<SportTermItemProps> = ({ sportTerm }) => {
+  const isFilled = sportTerm.numOfPlayers === sportTerm.maxPlayers;
+
   return (
-    <Wrapper open={sportTerm.played === false}>
+    <Wrapper open={!sportTerm.played} isFilled={isFilled}>
       <div className="heading">
         <div className="d-flex justify-content-between">
           <h3>{sportTerm.sport}</h3>
@@ -44,7 +46,7 @@ export const SportTermItem: React.FC<SportTermItemProps> = ({ sportTerm }) => {
   );
 };
 
-const Wrapper = styled.article<{ open: boolean }>`
+const Wrapper = styled.article<{ open: boolean; isFilled: boolean }>`
   border: var(--border);
   border-radius: 0.5rem;
   padding: 1.5rem;
@@ -63,7 +65,7 @@ const Wrapper = styled.article<{ open: boolean }>`
 
       &__players {
         font-weight: 700;
-        color: ${(props) => (props.open ? 'var(--green)' : 'var(--red)')};
+        color: ${(props) => (props.isFilled ? 'var(--green)' : 'var(--red)')};
       }
     }
   }

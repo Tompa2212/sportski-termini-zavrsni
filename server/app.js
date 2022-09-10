@@ -17,6 +17,7 @@ import {
   teamsRouter,
   userRouter,
 } from './routes/index.js';
+import { recommendationsRouter } from './routes/recommendationsRoutes.js';
 
 const app = express();
 const port = process.env.APP_PORT || 3000;
@@ -34,6 +35,7 @@ app.use('/api/v1/friends', authMiddleware, friendsRouter);
 app.use('/api/v1/friendRequests', authMiddleware, friendRequestsRouter);
 app.use('/api/v1/users', authMiddleware, userRouter);
 app.use('/api/v1/sports', sportsRouter);
+app.use('/api/v1/recommendations', authMiddleware, recommendationsRouter);
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);

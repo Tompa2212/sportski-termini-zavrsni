@@ -88,7 +88,10 @@ export const ApiProvider: React.FC<
   return <apiContext.Provider value={makeRequest}>{children}</apiContext.Provider>;
 };
 
-type MakeRequest = <T>(link: Link, options?: MakeRequestOptions) => Promise<T | null>;
+type MakeRequest = <T extends {}>(
+  link: Link,
+  options?: MakeRequestOptions
+) => Promise<T | null>;
 
 export const useApi = (): MakeRequest => {
   const abortControllers = useRef<Record<string, AbortController>>({});

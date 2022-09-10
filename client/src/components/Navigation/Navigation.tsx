@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { SettingsDropdown } from './SettingsDropdown';
 import { ReactComponent as HomeIcon } from '../../assets/icons/home.svg';
 import { ReactComponent as CreateSportTermIcon } from '../../assets/icons/createTerm.svg';
@@ -36,14 +36,14 @@ export const Navigation = () => {
           {links.map((link) => {
             return (
               <li className="nav__item" key={link.id}>
-                <Link
-                  className={`nav__link ${
-                    location.pathname === link.to ? 'active' : ''
-                  }`}
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? 'nav__link active' : 'nav__link'
+                  }
                   to={link.to}
                 >
                   {link.content}
-                </Link>
+                </NavLink>
               </li>
             );
           })}

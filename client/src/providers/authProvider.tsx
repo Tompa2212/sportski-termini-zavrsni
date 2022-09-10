@@ -35,55 +35,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(initialUserState);
   const navigate = useNavigate();
 
-  const signout = useCallback(() => {
+  const signout = () => {
     appStorage.removeItem('user');
     setUser(null);
     setStatus(AuthStatus.PENDING);
 
     navigate('/login');
-  }, [navigate]);
+  };
 
-  const login = useCallback(
-    async <T extends {}>(data: T) => {
-      try {
-        setStatus(AuthStatus.PENDING);
+  const register = async <T extends {}>(data: T) => {
+    try {
+      setStatus(AuthStatus.PENDING);
+      const response = await axios.post(
+        'http://localhost:3000/api/v1/auth/register',
+        data
+      );
 
-        const response = await axios.post(
-          'http://localhost:3000/api/v1/auth/login',
-          data
-        );
+      setUser(response.data);
+      setStatus(AuthStatus.SUCCESS);
+      appStorage.setItem('user', response.data);
+    } catch (error: any) {
+      setStatus(AuthStatus.ERROR);
+    }
+  };
 
-        setUser(response.data);
-        setStatus(AuthStatus.SUCCESS);
+  const login = async <T extends {}>(data: T) => {
+    try {
+      setStatus(AuthStatus.PENDING);
 
-        appStorage.setItem('user', response.data);
-      } catch (error: any) {
-        setStatus(AuthStatus.ERROR);
-        signout();
-      }
-    },
-    [signout]
-  );
+      const response = await axios.post(
+        'http://localhost:3000/api/v1/auth/login',
+        data
+      );
 
-  const register = useCallback(
-    async <T extends {}>(data: T) => {
-      try {
-        setStatus(AuthStatus.PENDING);
-        const response = await axios.post(
-          'http://localhost:3000/api/v1/auth/register',
-          data
-        );
+      setUser(response.data);
+      setStatus(AuthStatus.SUCCESS);
 
-        setUser(response.data);
-        setStatus(AuthStatus.SUCCESS);
-        appStorage.setItem('user', response.data);
-      } catch (error: any) {
-        setStatus(AuthStatus.SUCCESS);
-        signout();
-      }
-    },
-    [signout]
-  );
+      appStorage.setItem('user', response.data);
+    } catch (error) {
+      setStatus(AuthStatus.ERROR);
+    }
+  };
 
   const value = {
     user,

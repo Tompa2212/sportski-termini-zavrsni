@@ -16,7 +16,7 @@ export const HomePage: React.FC = () => {
       <>
         <h2>Trenutno nemamo preporučenih sportskih termina za Vas.</h2>
         <p>
-          Istražite sportske termine po Vašoj želji <Link to="/explore">ovdje</Link>.
+          Istražite sportske termine po Vašoj želji <Link to="/istrazi">ovdje</Link>.
         </p>
       </>
     );

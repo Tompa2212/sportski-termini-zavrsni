@@ -20,7 +20,8 @@ export const register = async (req, res) => {
   const resp = await session.writeTransaction((tx) =>
     tx.run(
       `
-      CREATE (u:User {id: randomUuid(), username: $username, password:$password, email:$email, initializationFinished: false})
+      CREATE (u:User {id: randomUuid(), username: $username, password:$password, email:$email, 
+      initializationFinished: false})
       RETURN u
   `,
       {

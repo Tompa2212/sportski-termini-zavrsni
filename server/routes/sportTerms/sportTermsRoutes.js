@@ -1,5 +1,4 @@
 import express from 'express';
-import { getRecommendedSportTerms } from '../../controllers/sportTerms/sportTermRecommendationsController.js';
 import {
   createSportTerm,
   deleteSportTerm,
@@ -17,5 +16,3 @@ sportTermsRouter
   .delete(deleteSportTerm);
 
 sportTermsRouter.route('/').post(createSportTerm).get(getAllSportTerms);
-
-sportTermsRouter.get('/recommendations/:id', getRecommendedSportTerms);

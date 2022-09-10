@@ -58,7 +58,7 @@ function App() {
             />
 
             <Route
-              path="/explore"
+              path="/istrazi"
               element={
                 <ProtectedRoute>
                   <div>Istraži</div>
