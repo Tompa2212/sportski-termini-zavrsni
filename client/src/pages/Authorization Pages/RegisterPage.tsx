@@ -6,7 +6,6 @@ import { useAuth } from '../../providers/authProvider';
 import { bridge } from '../../schema/bridge';
 import { registerSchema, registerFormFields } from '../../schema/registerSchema';
 import loginImg from '../../assets/login-bg.jpg';
-import { useEffect } from 'react';
 
 const schema = bridge(registerSchema);
 
@@ -21,13 +20,11 @@ export const RegisterPage = () => {
 
   const onSubmit = async (model: Record<string, any>) => {
     await register(model);
-  };
 
-  useEffect(() => {
     if (initializationNeeded) {
       navigate('/inicijalizacija');
     }
-  }, [initializationNeeded, navigate]);
+  };
 
   return (
     <Wrapper>

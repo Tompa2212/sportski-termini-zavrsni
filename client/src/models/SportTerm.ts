@@ -1,3 +1,5 @@
+import { BaseUser } from './user';
+
 export interface SportTerm {
   country: string;
   score: number;
@@ -6,12 +8,29 @@ export interface SportTerm {
   createdBy: string;
   playDate: string;
   pricePerPerson: number;
-  playTime: string;
+  playTimeStart: string;
+  playTimeEnd: string;
   teamGame: boolean;
   comment: string;
   id: string;
   played: boolean;
   sport: string;
-  maxPlayers: number;
+  playersPerTeam: number;
   numOfPlayers: number;
+}
+
+export type SportTermWithTeams = SportTerm & {
+  teams: {
+    players: BaseUser[];
+    name: string;
+    id: string;
+    gameResult: string;
+  }[];
+};
+
+export interface Team {
+  name: string;
+  id: string;
+  gameResult: string;
+  players: BaseUser[];
 }

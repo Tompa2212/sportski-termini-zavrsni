@@ -9,6 +9,10 @@ import { createSportTermLayout } from '../../schema/createTermSchema';
 import { appRequestLinks } from '../../utils/appLinks';
 
 const schema = bridge(createTermSchema);
+const initialModel = {
+  teamGame: false,
+  playersPerTeam: 1,
+};
 
 const sportTermsHref = appRequestLinks.sportTerms;
 
@@ -31,22 +35,24 @@ export const SportTermCreate = () => {
         <AutoForm
           onSubmit={onSubmit}
           schema={schema}
-          model={{ teamGame: false }}
+          model={initialModel}
           ref={(ref) => (formRef.current = ref)}
-          onChangeModel={(model) => {
-            if (model['teamGame']) {
-              model['playersPerTeam'] = 2;
-            }
-          }}
+          onChangeModel={(model) => {}}
         >
           <Wrapper>
-            {createSportTermLayout.map((fieldGroup) => {
+            {createSportTermLayout.map((fieldGroup, index) => {
               return (
-                <div className="field-group">
+                <div className="field-group" key={index}>
                   <h3>{fieldGroup.fieldGroup}</h3>
                   <div className="field-item">
                     {fieldGroup.fields.map((field) => {
-                      return <AutoField name={field.name} label={field.label} />;
+                      return (
+                        <AutoField
+                          name={field.name}
+                          label={field.label}
+                          key={field.name}
+                        />
+                      );
                     })}
                   </div>
                 </div>

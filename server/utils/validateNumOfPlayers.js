@@ -1,24 +1,38 @@
 import { BadRequestError } from '../errors/bad-request.js';
 import { NotFoundError } from '../errors/not-found.js';
+import { toNativeTypes } from './nativeTypes.js';
 
-export const validateNumOfPlayers = async (tx, sportTermId, players) => {
+export const validateNumOfPlayers = async (tx, teamId, userToAdd) => {
   const resp = await tx.run(
     `
-        MATCH (sT {id: $sportTermId})
-        RETURN sT.maxPlayersPerTeam as maxPlayers
+        MATCH (t:Team {id: $teamId})<-[:HAS_TEAM]-(st)
+        OPTIONAL MATCH (t)<-[:PLAYED_FOR]-(player)
+        WITH st, collect(player { .username } ) AS players
+        RETURN  {
+          playersPerTeam: st.playersPerTeam,
+          players: players
+        } AS data
     `,
-    { sportTermId }
+    { teamId }
   );
 
   if (!resp || !resp.records[0]) {
-    throw new NotFoundError(`No tean with id: ${sportTermId}`);
+    throw new NotFoundError(`No team with id: ${teamId}`);
   }
 
-  const playersPerTeam = resp.records[0].get('maxPlayers');
+  const { playersPerTeam, players } = toNativeTypes(resp.records[0].get('data'));
 
-  if (playersPerTeam && players.length > playersPerTeam) {
+  console.log(playersPerTeam, players);
+
+  if (playersPerTeam === players?.length) {
     throw new BadRequestError(
       `Maximum number of players per team exceeded. Allowed: ${playersPerTeam}`
+    );
+  }
+
+  if (players?.find((player) => player.username === userToAdd)) {
+    throw new BadRequestError(
+      `Player already in another team in the same sport term`
     );
   }
 };

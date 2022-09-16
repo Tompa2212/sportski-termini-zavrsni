@@ -11,7 +11,12 @@ const ajv = new Ajv({
   $data: true,
 });
 
-addFormats(ajv);
+ajv.addFormat('time', {
+  validate: (timeStringValue: string) =>
+    timeStringValue.match(/^([01]\d|2[0-3]):?([0-5]\d)$/) !== null,
+});
+
+addFormats(ajv, ['date', 'email']);
 
 function createValidator(schema: Object) {
   const validator = ajv.compile(schema);
@@ -36,6 +41,10 @@ function createValidator(schema: Object) {
             error.instancePath.includes('confirmPassword')
           ) {
             error.message = 'Lozinke moraju biti jednake';
+          }
+
+          if (error.params.format === 'time') {
+            error.message = 'Neispravno vrijeme';
           }
 
           error.message = capitalize(error.message);

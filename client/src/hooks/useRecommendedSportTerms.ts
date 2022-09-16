@@ -29,6 +29,7 @@ export const useRecommendedSportTerms = (): UseRecommendedSportTermsReturn => {
   useEffect(() => {
     const fetchData = async () => {
       setData((prev) => ({ ...prev, loading: true }));
+
       const response = await makeRequest<ResponseData>({
         href: getRecommendedSportTermsHref,
         type: 'GET',

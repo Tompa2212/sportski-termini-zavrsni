@@ -19,13 +19,17 @@ export const getRecommendedSportTerms = async (req, res) => {
         -[:PLAYED_SPORT]->(s:Sport)
         MATCH (sT)<-[:CREATED_SPORT_TERM]-(creator:User)
         MATCH (sT)-[:HAS_ADDRESS]->(a:Address)
-        OPTIONAL MATCH (sT)-[:HAS_TEAM]->(t)<-[:PLAYED_FOR]-(player)
+        MATCH (sT)-[:HAS_TEAM]->(t)<-[:PLAYED_FOR]-(player)
         WHERE person <> subject AND sT.played = false
         AND s.name IN $favSports AND creator <> subject
-        WITH subject, sT, s, a, creator, count(person) AS score,
-        collect(player) AS players, count(player) AS numOfPlayers
+        CALL {
+          WITH sT
+          MATCH (sT)-[:HAS_TEAM]->(t)<-[:PLAYED_FOR]-(player)
+          RETURN count(player) AS numOfPlayers, collect(player) AS players
+        }
+        WITH subject, sT, s, a, creator, numOfPlayers, players
         WHERE NOT subject IN players
-        RETURN sT {
+        RETURN DISTINCT sT {
             .*,
             address: a.address,
             city: a.city,
@@ -34,7 +38,6 @@ export const getRecommendedSportTerms = async (req, res) => {
             sport: s.name,
             numOfPlayers: numOfPlayers
         } as sT
-        ORDER BY score DESC
     `,
       { favSports, userId }
     );

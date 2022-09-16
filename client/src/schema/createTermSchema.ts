@@ -59,14 +59,14 @@ export const createTermSchema = {
       format: 'date',
       uniforms: { component: DateTimeField },
     },
-    playTime: {
+    playTimeStart: {
       type: 'string',
       format: 'time',
       uniforms: { component: TextInput },
     },
-    playDuration: {
-      type: 'number',
-      format: 'integer',
+    playTimeEnd: {
+      type: 'string',
+      format: 'time',
       uniforms: { component: TextInput },
     },
     address: {
@@ -87,7 +87,16 @@ export const createTermSchema = {
     },
   },
 
-  required: ['sport', 'pricePerPerson', 'address', 'city', 'playDate', 'playTime'],
+  required: [
+    'sport',
+    'pricePerPerson',
+    'address',
+    'city',
+    'country',
+    'playDate',
+    'playTimeStart',
+    'playTimeEnd',
+  ],
 };
 
 export const createSportTermLayout = [
@@ -97,8 +106,8 @@ export const createSportTermLayout = [
       { name: 'sport', label: 'Sport' },
       { name: 'pricePerPerson', label: 'Cijena po osobi' },
       { name: 'playDate', label: 'Datum igranja' },
-      { name: 'playTime', label: 'Vrijeme igranja' },
-      { name: 'playDuration', label: 'Vrijeme trajanja termina' },
+      { name: 'playTimeStart', label: 'Početak termina' },
+      { name: 'playTimeEnd', label: 'Kraj termina' },
       { name: 'teamGame', label: 'Ekipno' },
       { name: 'playersPerTeam', label: 'Broj igrača po ekipi' },
     ],

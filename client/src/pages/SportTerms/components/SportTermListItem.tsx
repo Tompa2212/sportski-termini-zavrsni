@@ -1,14 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SportTerm } from '../../../models/SportTerm';
 import { toLocalDateString, toLocaleTimeString } from '../../../utils/dateTime';
 
-interface SportTermItemProps {
+interface SportTermListItemProps {
   sportTerm: SportTerm;
 }
 
-export const SportTermItem: React.FC<SportTermItemProps> = ({ sportTerm }) => {
-  const isFilled = sportTerm.numOfPlayers === sportTerm.maxPlayers;
+export const SportTermIListItem: React.FC<SportTermListItemProps> = ({
+  sportTerm,
+}) => {
+  const isFilled = sportTerm.numOfPlayers === sportTerm.playersPerTeam * 2;
 
   return (
     <Wrapper open={!sportTerm.played} isFilled={isFilled}>
@@ -22,7 +25,7 @@ export const SportTermItem: React.FC<SportTermItemProps> = ({ sportTerm }) => {
             {sportTerm.city}, {sportTerm.address}
           </span>
           <span className="status__players">
-            {sportTerm.numOfPlayers} / {sportTerm.maxPlayers || 2}
+            {sportTerm.numOfPlayers} / {sportTerm.playersPerTeam * 2 || 2}
           </span>
         </div>
       </div>
@@ -33,15 +36,29 @@ export const SportTermItem: React.FC<SportTermItemProps> = ({ sportTerm }) => {
           <span>{toLocalDateString(sportTerm.playDate)}</span>
         </div>
         <div className="d-flex">
-          <span className="bold">Vrijeme igranja</span>
-          <span>{toLocaleTimeString(sportTerm.playTime)}</span>
+          <span className="bold">Početak igranja</span>
+          <span>{toLocaleTimeString(sportTerm.playTimeStart)}</span>
+        </div>
+        <div className="d-flex">
+          <span className="bold">Kraj igranja</span>
+          <span>{toLocaleTimeString(sportTerm.playTimeEnd)}</span>
         </div>
         <div className="d-flex">
           <span className="bold">Cijena po osobi</span>
           <span>{sportTerm.pricePerPerson} kn</span>
         </div>
       </div>
-      <button className="btn w-100">Detalji</button>
+      <Link
+        to={`sportskiTermin/${sportTerm.id}`}
+        className="btn w-100"
+        style={{
+          display: 'inline-block',
+          textDecoration: 'none',
+          textAlign: 'center',
+        }}
+      >
+        Detalji
+      </Link>
     </Wrapper>
   );
 };
@@ -65,7 +82,7 @@ const Wrapper = styled.article<{ open: boolean; isFilled: boolean }>`
 
       &__players {
         font-weight: 700;
-        color: ${(props) => (props.isFilled ? 'var(--green)' : 'var(--red)')};
+        color: ${(props) => (props.isFilled ? 'var(--red)' : 'var(--green)')};
       }
     }
   }

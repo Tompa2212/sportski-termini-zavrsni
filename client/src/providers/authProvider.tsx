@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { appStorage } from '../utils/app storage';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 export interface User {
-  token: string;
   username: string;
   id: string;
   initializationFinished: boolean;
@@ -24,7 +24,25 @@ interface AuthProviderState {
   signout: () => void;
 }
 
-const initialUserState = appStorage.getItem('user');
+const getUserInitialState = (): User | null => {
+  const token = appStorage.getItem('token');
+
+  if (!token) {
+    return null;
+  }
+
+  const { id, username, initializationFinished } = jwt_decode<User>(token);
+
+  return {
+    id,
+    username,
+    initializationFinished,
+  };
+};
+
+getUserInitialState();
+
+const initialUserState = getUserInitialState();
 
 const authContext = React.createContext<AuthProviderState>(undefined as any);
 
@@ -36,7 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
 
   const signout = () => {
-    appStorage.removeItem('user');
+    appStorage.removeItem('token');
     setUser(null);
     setStatus(AuthStatus.PENDING);
 
@@ -53,9 +71,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setUser(response.data);
       setStatus(AuthStatus.SUCCESS);
-      appStorage.setItem('user', response.data);
+      appStorage.setItem('token', response.data.token);
     } catch (error: any) {
       setStatus(AuthStatus.ERROR);
+      throw error;
     }
   };
 
@@ -70,10 +89,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setUser(response.data);
       setStatus(AuthStatus.SUCCESS);
-
-      appStorage.setItem('user', response.data);
+      appStorage.setItem('token', response.data.token);
     } catch (error) {
       setStatus(AuthStatus.ERROR);
+      throw error;
     }
   };
 

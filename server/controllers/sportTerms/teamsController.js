@@ -5,7 +5,8 @@ import { NotFoundError } from '../../errors/not-found.js';
 import { cleanObject } from '../../utils/cleanObject.js';
 import { validateNumOfPlayers } from '../../utils/validateNumOfPlayers.js';
 import { getDriver } from '../../db/neo4j.js';
-import { setPlayersOfTeam } from '../../utils/query.js';
+import { CustomAPIError } from '../../errors/custom-api.js';
+import { toNativeTypes } from '../../utils/nativeTypes.js';
 
 export const getTeam = async (req, res) => {
   const { id: teamId } = req.params;
@@ -42,7 +43,7 @@ export const getTeam = async (req, res) => {
 };
 
 export const createTeam = async (req, res) => {
-  const { name, players, sportTermId } = req.body;
+  const { name, sportTermId } = req.body;
 
   if (!sportTermId || !name) {
     throw new BadRequestError('Please provide name and sport term id.');
@@ -50,39 +51,11 @@ export const createTeam = async (req, res) => {
 
   const session = getDriver().session();
 
-  if (players) {
-    await session.readTransaction(async (tx) => {
-      try {
-        await validateNumOfPlayers(tx, sportTermId, players);
-      } catch (error) {
-        throw error;
-      }
-    });
-  }
-
-  const team = await session.writeTransaction(async (tx) => {
-    let team = await tx.run(
+  const resp = await session.writeTransaction((tx) => {
+    return tx.run(
       `
         MATCH (sT:SportTerm {id: $sportTermId})
         CREATE (sT)-[:HAS_TEAM]->(t:Team {id: randomUuid(), name: $name})
-        RETURN t
-  `,
-      { sportTermId, name }
-    );
-
-    if (!team || team.records.length === 0) {
-      throw new NotFoundError(`No sport term with id: ${sportTermId}`);
-    }
-
-    team = team.records[0].get('t');
-
-    if (!players) {
-      return team;
-    }
-
-    const resp = await tx.run(
-      `
-        MATCH (t:Team {id: $teamId})
         WITH t
         UNWIND $players AS player
         MATCH (u:User {id: player.id})
@@ -92,41 +65,28 @@ export const createTeam = async (req, res) => {
             .*,
             players: players
         }
-    `,
-      { teamId: team.properties.id, players }
+  `,
+      { sportTermId, name }
     );
-
-    return {
-      ...resp.records[0].get('t'),
-    };
   });
 
   await session.close();
+
+  if (!resp || !resp.records.length) {
+    throw new BadRequestError('Unable to create team');
+  }
+
+  const team = resp.records[0].get('t');
 
   return res.status(StatusCodes.CREATED).json({ team });
 };
 
 export const updateTeam = async (req, res) => {
-  const { players, ...teamBaseProps } = req.body;
   const { id: teamId } = req.params;
 
   const session = getDriver().session();
 
-  if (players) {
-    await session.readTransaction(async (tx) => {
-      try {
-        await validateNumOfPlayers(tx, teamId, players);
-      } catch (error) {
-        throw error;
-      }
-    });
-  }
-
   const team = await session.writeTransaction(async (tx) => {
-    if (players) {
-      await setPlayersOfTeam(tx, teamId, players);
-    }
-
     const resp = tx.run(
       `
         MATCH (t:Team {id: $teamId})
@@ -139,7 +99,7 @@ export const updateTeam = async (req, res) => {
         }
         
   `,
-      { teamId, updatedProperties: cleanObject(teamBaseProps, allowedTeamProperties) }
+      { teamId, updatedProperties: cleanObject(req.body, allowedTeamProperties) }
     );
 
     if (!resp || resp.records.length === 0) {
@@ -152,4 +112,66 @@ export const updateTeam = async (req, res) => {
   await session.close();
 
   return res.status(StatusCodes.OK).json({ team });
+};
+
+export const addPlayerToTeam = async (req, res) => {
+  const { username } = req.user;
+  const { id: teamId } = req.params;
+
+  const session = getDriver().session();
+
+  const team = await session.writeTransaction(async (tx) => {
+    try {
+      await validateNumOfPlayers(tx, teamId, username);
+    } catch (error) {
+      throw error;
+    }
+
+    const resp = await tx.run(
+      `
+        MATCH (t:Team {id: $teamId})<-[:HAS_TEAM]-(st)
+        MATCH (subject:User {username: $username})
+        CREATE (t)<-[:PLAYED_FOR]-(subject)
+        RETURN t
+  `,
+      { teamId, username }
+    );
+
+    return toNativeTypes(resp.records[0].get('t').properties);
+  });
+
+  if (!team) {
+    throw new CustomAPIError('Unable to add user to team.');
+  }
+
+  res.status(StatusCodes.OK).json({ team });
+};
+
+export const removePlayer = async (req, res) => {
+  const { id: teamId, username } = req.params;
+
+  const session = getDriver().session();
+
+  const resp = await session.writeTransaction((tx) =>
+    tx.run(
+      `
+    MATCH (t:Team {id: $teamId})
+    MATCH (u:User {username: $username})
+    MATCH (t)<-[r:PLAYED_FOR]-(u)
+    DELETE r
+    RETURN r
+  `,
+      { teamId, username }
+    )
+  );
+
+  await session.close();
+
+  if (!resp || !resp.records.length) {
+    throw new BadRequestError(
+      `User ${username} is not playing for team with id: ${teamId}`
+    );
+  }
+
+  return res.status(StatusCodes.OK).json({ msg: 'OK' });
 };

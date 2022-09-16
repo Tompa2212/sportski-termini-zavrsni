@@ -109,19 +109,11 @@ export const getSportTerm = async (req, res) => {
 
 export const createSportTerm = async (req, res) => {
   const { userId } = req.user;
+  const { playTimeStart, playTimeEnd, ...rest } = req.body;
 
-  const {
-    sport,
-    playDate,
-    playTime,
-    teamGame,
-    comment,
-    pricePerPerson,
-    address,
-    city,
-    country,
-  } = req.body;
-
+  if (playTimeStart > playTimeEnd) {
+    throw new BadRequestError('Start time cannot be bigger than end time.');
+  }
   const session = getDriver().session();
 
   const resp = await session.writeTransaction((tx) =>
@@ -135,37 +127,28 @@ export const createSportTerm = async (req, res) => {
         played: false, 
         pricePerPerson: $pricePerPerson,
         playDate: date($playDate),
-        playTime: time($playTime),
+        playTimeStart: time($playTimeStart),
+        playTimeEnd: time($playTimeEnd)
         teamGame: $teamGame,
-        comment: $comment 
+        comment: $comment,
+        playersPerTeam: $playersPerTeam
     })-[:PLAYED_SPORT]->(s)
     MERGE (u)-[:CREATED_SPORT_TERM]->(sT)
     CREATE (t1:Team {name: "Tim A"})-<[:HAS_TEAM]-(st)-[:HAS_TEAM]->(t2:Team {name :"Tim B"})
     RETURN sT {
       .*,
       playDate: apoc.temporal.format( sT.playDate, '${dateFormat}'),
-      playTime: apoc.temporal.format( sT.playTime, '${timeFormat}'),
+      playTimeStart: apoc.temporal.format( sT.playTimeStart, '${timeFormat}'),
+      playTimeEnd: apoc.temporal.format( sT.playTimeEnd, '${timeFormat}'),
       sport: s.name,
       address: a.address,
       city: a.city,
       country: a.country
     }
     `,
-      {
-        sport,
-        playDate,
-        playTime,
-        teamGame,
-        comment,
-        pricePerPerson,
-        address,
-        city,
-        country,
-        userId,
-      }
+      { ...rest, playTimeStart, playTimeEnd, userId }
     )
   );
-
   await session.close();
 
   if (!resp || resp.records.length === 0) {
@@ -224,4 +207,36 @@ export const updateSportTerm = async (req, res) => {
   const sportTerm = resp.records[0].get('sT');
 
   return res.status(StatusCodes.OK).json({ sportTerm });
+};
+
+export const getSportTermTeams = async (req, res) => {
+  const { id: sportTermId } = req.params;
+
+  const session = await getDriver().session();
+
+  const resp = await session.readTransaction((tx) =>
+    tx.run(
+      `
+      MATCH (sT:SportTerm {id: $sportTermId})-[:HAS_TEAM]->(t)
+      OPTIONAL MATCH (t)<-[:PLAYED_FOR]-(player)
+      WITH  t, collect(player {  .id, .username }) AS players
+      RETURN t {
+        .*,
+        players: players
+      }`,
+      {
+        sportTermId,
+      }
+    )
+  );
+
+  await session.close();
+
+  if (!resp || resp.records.length === 0) {
+    throw new BadRequestError(`Sport term with id:${sportTermId} does not exist.`);
+  }
+
+  const teams = resp.records.map((team) => team.get('t'));
+
+  res.status(StatusCodes.OK).json({ teams });
 };

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useAuth } from '../../providers/authProvider';
+import { AuthStatus, useAuth } from '../../providers/authProvider';
 import loginImg from '../../assets/login-bg.jpg';
 import { Link } from 'react-router-dom';
 import { AutoForm, AutoField } from 'uniforms-unstyled';
@@ -7,25 +7,19 @@ import { SubmitField } from '../../components/FormFields/SubmitField';
 import { bridge } from '../../schema/bridge';
 import { loginSchema } from '../../schema/loginSchema';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const schema = bridge(loginSchema);
 const authError = { message: 'Invalid username or password' };
 const error = false;
 
 export default function LoginPage() {
-  const { login, user } = useAuth();
+  const { login, status } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (model: Record<string, any>) => {
     await login(model);
+    navigate('/');
   };
-
-  useEffect(() => {
-    if (user) {
-      navigate('/');
-    }
-  }, [user, navigate]);
 
   return (
     <Wrapper>
@@ -36,6 +30,17 @@ export default function LoginPage() {
             <h1>Sportski Termini</h1>
             <h2>Zaigraj svoje najdraže sportove i upoznaj nove ljude!</h2>
           </div>
+          {status === AuthStatus.ERROR && (
+            <span
+              style={{
+                color: 'var(--red)',
+                marginBottom: '0.5rem',
+                display: 'inline-block',
+              }}
+            >
+              Neispravni podaci za prijavu.
+            </span>
+          )}
           <AutoForm schema={schema} onSubmit={onSubmit}>
             <AutoField
               name="username"
@@ -91,7 +96,7 @@ const Wrapper = styled.section`
     padding: 3rem 2rem;
 
     .title {
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .content {

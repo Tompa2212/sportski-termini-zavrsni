@@ -17,9 +17,10 @@ import { UserPage } from './pages/User Page/UserPage';
 import { SportTermCreate } from './pages/Sport Term Create/SportTermCreate';
 import { UserEditPage } from './pages/User Edit Page/UserEditPage';
 import { InitalizeUserModal } from './pages/User Initialize/InitalizeUserModal';
+import { SportTerm } from './pages/SportTerms/SportTerm';
 
 const getBearerToken = () => {
-  return appStorage.getItem('user')?.token;
+  return appStorage.getItem('token');
 };
 
 function App() {
@@ -56,16 +57,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
             <Route
-              path="/istrazi"
+              path="/sportskiTermin/:id"
               element={
                 <ProtectedRoute>
-                  <div>Istraži</div>
+                  <div className="container">
+                    <SportTerm />
+                  </div>
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/kreiraj"
               element={
@@ -76,7 +77,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            <Route
+              path="/istrazi"
+              element={
+                <ProtectedRoute>
+                  <div>Istraži</div>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/korisnik/:username"
               element={
@@ -98,6 +106,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route path="/inicijalizacija" element={<InitalizeUserModal />} />
             <Route path="*" element={<NotFound />} />
           </Route>

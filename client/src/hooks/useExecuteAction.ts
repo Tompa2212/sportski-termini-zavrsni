@@ -20,7 +20,7 @@ export const useExecuteAction = () => {
 
         onComplete();
       } catch (error: any) {
-        alert(error.message);
+        alert(error.response.data.msg);
       }
     },
     [makeRequest]
