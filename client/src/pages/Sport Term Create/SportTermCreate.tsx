@@ -21,9 +21,11 @@ export const SportTermCreate = () => {
   const formRef = useRef<any>(null);
 
   const onSubmit = async (model: Record<string, any>) => {
+    const formData = { ...model, sport: model.sport.value };
+
     await executeAction({
       link: { href: sportTermsHref, type: 'POST' },
-      body: model,
+      body: formData,
       onComplete: () => formRef.current.reset(),
     });
   };

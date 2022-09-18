@@ -22,14 +22,12 @@ const getContent = (options: User[], loading: boolean) => {
     return <div>Korisnik nije pronađen</div>;
   }
 
-  return options.map((option) => {
-    return (
-      <div className="search-field__item" key={option.id}>
-        <span className="search-field__icon"></span>
-        <Link to={`/korisnik/${option.username}`}>{option.username}</Link>
-      </div>
-    );
-  });
+  return options.map((option) => (
+    <div className="search-field__item" key={option.id}>
+      <span className="search-field__icon"></span>
+      <Link to={`/korisnik/${option.username}`}>{option.username}</Link>
+    </div>
+  ));
 };
 
 export const SearchDropdown: React.FC<Props> = ({ onClose, options, loading }) => {

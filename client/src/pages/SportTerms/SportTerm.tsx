@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useSportTermData } from '../../hooks/useSportTermData';
 import { BaseUser } from '../../models/user';
 import { toLocalDateString, toLocaleTimeString } from '../../utils/dateTime';
-import { SportTermTeams } from './components/SportTermTeams';
+import { SportTermTeams } from './SportTermTeams/SportTermTeams';
 
 const getNumberOfPlayers = (
   teams:
@@ -33,7 +33,7 @@ export const SportTerm = () => {
   );
 
   if (status === 'loading') {
-    return <h1>Loading...</h1>;
+    return <h1>Učitavanje...</h1>;
   }
 
   if (status === 'error') {
@@ -41,10 +41,10 @@ export const SportTerm = () => {
   }
 
   if (!sportTerm) {
-    return <h1>Trenutno ne možemo pronaći traženi sportski termin.</h1>;
+    return <h1>Učitavanje...</h1>;
   }
 
-  const { played, playersPerTeam, teams } = sportTerm;
+  const { played, playersPerTeam } = sportTerm;
 
   return (
     <section>

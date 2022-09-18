@@ -40,8 +40,6 @@ const getUserInitialState = (): User | null => {
   };
 };
 
-getUserInitialState();
-
 const initialUserState = getUserInitialState();
 
 const authContext = React.createContext<AuthProviderState>(undefined as any);
@@ -61,6 +59,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     navigate('/login');
   };
 
+  const onSuccessAuth = (data: any) => {
+    const { token, ...user } = data;
+
+    setUser(user);
+    setStatus(AuthStatus.SUCCESS);
+    appStorage.setItem('token', token);
+  };
+
   const register = async <T extends {}>(data: T) => {
     try {
       setStatus(AuthStatus.PENDING);
@@ -69,12 +75,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         data
       );
 
-      setUser(response.data);
-      setStatus(AuthStatus.SUCCESS);
-      appStorage.setItem('token', response.data.token);
+      onSuccessAuth(response.data);
+      navigate('/inicijalizacija');
     } catch (error: any) {
       setStatus(AuthStatus.ERROR);
-      throw error;
     }
   };
 
@@ -87,12 +91,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         data
       );
 
-      setUser(response.data);
-      setStatus(AuthStatus.SUCCESS);
-      appStorage.setItem('token', response.data.token);
+      onSuccessAuth(response.data);
+      navigate('/');
     } catch (error) {
       setStatus(AuthStatus.ERROR);
-      throw error;
     }
   };
 

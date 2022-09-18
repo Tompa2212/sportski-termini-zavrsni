@@ -29,7 +29,7 @@ export const Notifications = () => {
         ) : null}
       </div>
 
-      {open && (
+      {open && friendRequests.length ? (
         <div className="dropdown-container__dropdown">
           {friendRequests.map((item) => {
             return (
@@ -49,7 +49,7 @@ export const Notifications = () => {
             );
           })}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { Tab } from '../../components/Tabs/Tab';
+import { Tabs } from '../../components/Tabs/Tabs';
 import { useUserProfileInfo } from '../../hooks/useUserProfileInfo';
 import { useUser } from '../../providers/authProvider';
 import { FriendsModal } from './FriendsModal';
@@ -12,6 +14,8 @@ export const UserPage = () => {
 
   const { username: paramUsername } = useParams();
   const [showFriendsModal, setShowFriendsModal] = useState(false);
+
+  const [activeKey, setActiveKey] = useState('terms');
 
   const {
     data: userProfileData,
@@ -72,7 +76,14 @@ export const UserPage = () => {
             </div>
           </div>
         </header>
-        <SportStats />
+        <Tabs activeKey={activeKey} onSelect={(key) => setActiveKey(key)}>
+          <Tab eventKey="terms" title="Sportski Termini">
+            dinamo
+          </Tab>
+          <Tab eventKey="stats" title="Statistika">
+            <SportStats />
+          </Tab>
+        </Tabs>
       </main>
     </Wrapper>
   );

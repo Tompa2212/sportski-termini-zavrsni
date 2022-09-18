@@ -85,7 +85,7 @@ const Wrapper = styled.div`
     }
 
     svg {
-      transform: scale(0.7);
+      transform: scale(1.2);
     }
   }
 `;

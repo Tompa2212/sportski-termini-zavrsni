@@ -75,7 +75,7 @@ export const getSportTerm = async (req, res) => {
       OPTIONAL MATCH (sT)-[:HAS_TEAM*0..1]->(t:Team)
       CALL {
         WITH t
-        MATCH (u:User)-[:PLAYED_FOR]->(t)
+        OPTIONAL MATCH (u:User)-[:PLAYED_FOR]->(t)
         RETURN t {
           .*,
           players: collect(u {.id , .username})
@@ -128,18 +128,18 @@ export const createSportTerm = async (req, res) => {
         pricePerPerson: $pricePerPerson,
         playDate: date($playDate),
         playTimeStart: time($playTimeStart),
-        playTimeEnd: time($playTimeEnd)
+        playTimeEnd: time($playTimeEnd),
         teamGame: $teamGame,
         comment: $comment,
         playersPerTeam: $playersPerTeam
     })-[:PLAYED_SPORT]->(s)
-    MERGE (u)-[:CREATED_SPORT_TERM]->(sT)
-    CREATE (t1:Team {name: "Tim A"})-<[:HAS_TEAM]-(st)-[:HAS_TEAM]->(t2:Team {name :"Tim B"})
+    CREATE (u)-[:CREATED_SPORT_TERM]->(sT)
+    CREATE (t1:Team {id: randomUuid(), name: "Tim A"})<-[:HAS_TEAM]-(sT)-[:HAS_TEAM]->(t2:Team {id: randomUuid(), name :"Tim B"})
     RETURN sT {
       .*,
-      playDate: apoc.temporal.format( sT.playDate, '${dateFormat}'),
-      playTimeStart: apoc.temporal.format( sT.playTimeStart, '${timeFormat}'),
-      playTimeEnd: apoc.temporal.format( sT.playTimeEnd, '${timeFormat}'),
+      playDate: apoc.temporal.format(sT.playDate, '${dateFormat}'),
+      playTimeStart: apoc.temporal.format(sT.playTimeStart, '${timeFormat}'),
+      playTimeEnd: apoc.temporal.format(sT.playTimeEnd, '${timeFormat}'),
       sport: s.name,
       address: a.address,
       city: a.city,

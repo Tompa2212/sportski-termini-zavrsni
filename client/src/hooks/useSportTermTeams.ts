@@ -51,10 +51,10 @@ export const useSportTermTeams = (sportTermId: string | undefined) => {
     });
   };
 
-  const removePlayer = async (teamId: string) => {
+  const removePlayer = async (teamId: string, username: string | undefined) => {
     await executeAction({
       link: {
-        href: createRemovePlayerLink(teamId, user?.username || ''),
+        href: createRemovePlayerLink(teamId, username || ''),
         type: 'DELETE',
       },
       onComplete: () => refetchData(),

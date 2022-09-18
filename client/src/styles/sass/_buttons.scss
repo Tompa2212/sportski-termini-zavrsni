@@ -36,4 +36,13 @@
       color: $text-color;
     }
   }
+
+  &--red {
+    background-color: $red;
+    color: $white;
+
+    &:hover {
+      background-color: $red-dark !important;
+    }
+  }
 }

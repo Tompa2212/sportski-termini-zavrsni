@@ -13,17 +13,10 @@ const error = false;
 const authError = 'Invalid credentials';
 
 export const RegisterPage = () => {
-  const { register, user } = useAuth();
-  const navigate = useNavigate();
-
-  const initializationNeeded = user && !user.initializationFinished;
+  const { register } = useAuth();
 
   const onSubmit = async (model: Record<string, any>) => {
     await register(model);
-
-    if (initializationNeeded) {
-      navigate('/inicijalizacija');
-    }
   };
 
   return (

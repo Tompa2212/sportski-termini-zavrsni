@@ -8,6 +8,7 @@ import { initDriver } from './db/neo4j.js';
 import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware.js';
 import { authMiddleware } from './middleware/authMiddleware.js';
 import { notFound } from './middleware/notFoundMiddleware.js';
+import morgan from 'morgan';
 import {
   authRouter,
   sportsRouter,
@@ -22,6 +23,7 @@ import { recommendationsRouter } from './routes/recommendationsRoutes.js';
 const app = express();
 const port = process.env.APP_PORT || 3000;
 
+app.use(morgan('tiny'));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
