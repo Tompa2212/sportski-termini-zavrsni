@@ -574,6 +574,17 @@ h1 {
   text-decoration: none;
 }
 
+.search-field__item > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-field__item > div span {
+  font-weight: 200;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
 .search-field__icon {
   display: inline-block;
   background-color: var(--gray);

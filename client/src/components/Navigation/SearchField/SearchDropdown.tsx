@@ -1,19 +1,16 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useOnClickOutside } from '../../../hooks/useOnClickOutside';
-
-interface User {
-  id: string;
-  username: string;
-}
+import { BaseUser } from '../../../models/user';
+import { ProfilePhoto } from '../../ProfilePhoto';
 
 interface Props {
   onClose: () => void;
   loading: boolean;
-  options: User[];
+  options: BaseUser[];
 }
 
-const getContent = (options: User[], loading: boolean) => {
+const getContent = (options: BaseUser[], loading: boolean) => {
   if (options.length === 0 && loading) {
     return <div>Tražim...</div>;
   }
@@ -24,8 +21,14 @@ const getContent = (options: User[], loading: boolean) => {
 
   return options.map((option) => (
     <div className="search-field__item" key={option.id}>
-      <span className="search-field__icon"></span>
-      <Link to={`/korisnik/${option.username}`}>{option.username}</Link>
+      <ProfilePhoto
+        style={{ width: '3rem', height: '3rem' }}
+        src={option.profilePhotoSrc}
+      />
+      <div>
+        <Link to={`/korisnik/${option.username}`}>{option.username}</Link>
+        <span>Korisnik</span>
+      </div>
     </div>
   ));
 };

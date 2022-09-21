@@ -1,11 +1,13 @@
 export interface BaseUser {
   id: string;
   username: string;
+  profilePhotoSrc: string | null;
 }
 
 export interface UserProfile {
   numOfFriends: number;
   username: string;
+  profilePhotoSrc: string | null;
   isFriendWithViewer: boolean;
   hasFriendRequestFromViewer: boolean;
   sentFriendRequestToViewer: boolean;

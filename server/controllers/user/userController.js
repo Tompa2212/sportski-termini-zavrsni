@@ -32,6 +32,7 @@ export const getUserInfo = async (req, res) => {
       rFRS IS NOT NULL AS sentFriendRequestToViewer, rFRH IS NOT NULL AS hasFriendRequestFromViewer
       RETURN subject {
         .username,
+        .profilePhotoSrc,
         numOfFriends: numOfFriends,
         isFriendWithViewer: isFriendWithViewer,
         sentFriendRequestToViewer: sentFriendRequestToViewer,
@@ -68,7 +69,8 @@ export const searchUsers = async (req, res) => {
     WHERE u.username STARTS WITH $username
     RETURN u {
       .username,
-      .id
+      .id,
+      .profilePhotoSrc
     }
   `,
       { username }
@@ -78,6 +80,8 @@ export const searchUsers = async (req, res) => {
   await session.close();
 
   const users = resp.records.map((row) => row.get('u'));
+
+  console.log(users);
 
   res.status(StatusCodes.OK).json({ users });
 };

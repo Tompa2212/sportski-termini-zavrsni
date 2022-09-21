@@ -30,11 +30,11 @@ export const getUserCurrentGames = async (req, res) => {
     tx.run(
       `
       MATCH (u:User { username: $username })
-      MATCH (u)-[:PLAYED_FOR]->(t)<-[:HAS_TEAM]-(sT)-[:HAS_ADDRESS]->(a)
-      MATCH (creator)-[:CREATED_SPORT_TERM]->(sT)-[:PLAYED_SPORT]->(s)
+      OPTIONAL MATCH (u)-[:PLAYED_FOR]->(t)<-[:HAS_TEAM]-(sT)-[:HAS_ADDRESS]->(a)
+      OPTIONAL MATCH (creator)-[:CREATED_SPORT_TERM]->(sT)-[:PLAYED_SPORT]->(s)
       CALL {
         WITH sT
-        MATCH (sT)-[:HAS_TEAM]->(t)<-[:PLAYED_FOR]-(player)
+        OPTIONAL MATCH (sT)-[:HAS_TEAM]->(t)<-[:PLAYED_FOR]-(player)
         RETURN count(player) AS numOfPlayers
       }
       RETURN sT {
@@ -57,7 +57,11 @@ export const getUserCurrentGames = async (req, res) => {
     throw new NotFoundError(`No user with username ${username}`);
   }
 
-  const sportTerms = resp.records.map((row) => toNativeTypes(row.get('sT')));
+  const sportTerms = resp.records.flatMap((row) => {
+    const data = row.get('sT');
+
+    return data ? [toNativeTypes(data)] : [];
+  });
 
   return res
     .status(StatusCodes.OK)

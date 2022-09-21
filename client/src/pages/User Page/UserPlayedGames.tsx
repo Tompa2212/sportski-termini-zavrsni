@@ -23,7 +23,7 @@ export const UserPlayedGames = () => {
   }
 
   if (status === 'error') {
-    return <h1>Pograška prilikom učitavanja...</h1>;
+    return <h1>Pogreška prilikom učitavanja...</h1>;
   }
 
   return (

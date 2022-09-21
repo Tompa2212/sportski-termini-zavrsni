@@ -2,22 +2,24 @@ import styled from 'styled-components';
 import { AuthStatus, useAuth } from '../../providers/authProvider';
 import loginImg from '../../assets/login-bg.jpg';
 import { Link } from 'react-router-dom';
-import { AutoForm, AutoField } from 'uniforms-unstyled';
-import { SubmitField } from '../../components/FormFields/SubmitField';
-import { bridge } from '../../schema/bridge';
-import { loginSchema } from '../../schema/loginSchema';
-import { useNavigate } from 'react-router-dom';
 
-const schema = bridge(loginSchema);
-const authError = { message: 'Invalid username or password' };
-const error = false;
+import { SubmitField } from '../../components/FormFields/SubmitField';
+
+import { useNavigate } from 'react-router-dom';
+import TextField from '../../components/FormFields/TextField';
+import React from 'react';
 
 export default function LoginPage() {
   const { login, status } = useAuth();
   const navigate = useNavigate();
 
-  const onSubmit = async (model: Record<string, any>) => {
-    await login(model);
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const fieldValues = Object.fromEntries(formData.entries());
+
+    await login(fieldValues);
     navigate('/');
   };
 
@@ -41,21 +43,9 @@ export default function LoginPage() {
               Neispravni podaci za prijavu.
             </span>
           )}
-          <AutoForm schema={schema} onSubmit={onSubmit}>
-            <AutoField
-              name="username"
-              className="form-login-input"
-              placeholder="Korisničko ime"
-              authError={error ? authError : null}
-              label="Korisničko ime"
-            />
-            <AutoField
-              name="password"
-              className="form-login-input"
-              placeholder="Lozinka"
-              authError={error ? authError : null}
-              label="Lozinka"
-            />
+          <form noValidate onSubmit={onSubmit}>
+            <TextField name="username" label="Korisničko ime" />
+            <TextField name="password" label="Lozinka" type="password" />
             <div className="submit-cont">
               <SubmitField title="Prijava" className="btn form-submit-btn" />
               <p>
@@ -65,7 +55,7 @@ export default function LoginPage() {
                 </Link>
               </p>
             </div>
-          </AutoForm>
+          </form>
         </div>
       </div>
     </Wrapper>

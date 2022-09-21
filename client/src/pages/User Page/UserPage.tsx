@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { ProfilePhoto } from '../../components/ProfilePhoto';
 import { Tab } from '../../components/Tabs/Tab';
 import { Tabs } from '../../components/Tabs/Tabs';
 import { useUserProfileInfo } from '../../hooks/useUserProfileInfo';
@@ -48,7 +49,7 @@ export const UserPage = () => {
     <Wrapper>
       <main>
         <header>
-          <span className="profile-icon"></span>
+          <ProfilePhoto src={userProfileData.profilePhotoSrc} />
           <div>
             <div className="d-flex gap--s user-actions">
               <h3>{username}</h3>

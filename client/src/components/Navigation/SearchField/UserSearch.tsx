@@ -4,19 +4,17 @@ import { useEffect, useState } from 'react';
 import { SearchDropdown } from './SearchDropdown';
 import { useDebouncedValue } from '../../../hooks/useDebouncedValue';
 import { appRequestLinks } from '../../../utils/appLinks';
+import { BaseUser } from '../../../models/user';
 
 const getUsersHref = appRequestLinks.getUsers;
 
 interface UsersState {
-  users: {
-    id: string;
-    username: string;
-  }[];
+  users: BaseUser[];
   loading: boolean;
 }
 
 type Response = {
-  users: { id: string; username: string }[];
+  users: BaseUser[];
 };
 
 const initialState = {

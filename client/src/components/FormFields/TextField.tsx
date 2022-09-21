@@ -25,10 +25,11 @@ const TextField: React.FC<TextFieldProps> = ({
         {label}
       </label>
       <Input
-        autoComplete={type === 'password' ? 'new-password' : 'off'}
-        value={value}
         id={id}
         name={name}
+        value={value}
+        type={type}
+        autoComplete={type === 'password' ? 'new-password' : 'off'}
         onChange={(e) => setValue(e.target.value)}
         onBlur={() => setTouched(true)}
       />

@@ -8,6 +8,7 @@ export interface User {
   username: string;
   id: string;
   initializationFinished: boolean;
+  profilePhotoSrc: string | null;
 }
 
 export enum AuthStatus {
@@ -31,12 +32,14 @@ const getUserInitialState = (): User | null => {
     return null;
   }
 
-  const { id, username, initializationFinished } = jwt_decode<User>(token);
+  const { id, username, initializationFinished, profilePhotoSrc } =
+    jwt_decode<User>(token);
 
   return {
     id,
     username,
     initializationFinished,
+    profilePhotoSrc,
   };
 };
 

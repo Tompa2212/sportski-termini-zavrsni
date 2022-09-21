@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import * as Cloudinary from 'cloudinary';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import 'express-async-errors';
@@ -19,6 +20,14 @@ import {
   userRouter,
 } from './routes/index.js';
 import { recommendationsRouter } from './routes/recommendationsRoutes.js';
+
+const clodinary = Cloudinary.v2;
+
+clodinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+});
 
 const app = express();
 const port = process.env.APP_PORT || 3000;

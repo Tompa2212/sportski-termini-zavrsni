@@ -60,6 +60,10 @@ export const RegisterPage = () => {
     const formData = new FormData(event.currentTarget);
     const fieldValues = Object.fromEntries(formData.entries());
 
+    if (fieldValues.password !== fieldValues.confirmPassword) {
+      return;
+    }
+
     const isValid = Object.entries(fieldValues).every(([field, value]) => {
       if (typeof value === 'string') {
         return registerFormErrors[field as keyof RegisterFormData](value);
