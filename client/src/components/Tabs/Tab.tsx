@@ -1,9 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TabProps } from '.';
 
-export const Tab: React.FC<TabProps> = () => {
-  return <div>Tab</div>;
+export const Tab: React.FC<TabProps> = ({ children }) => {
+  return <>{children}</>;
 };
-
-const Wrapper = styled.div``;

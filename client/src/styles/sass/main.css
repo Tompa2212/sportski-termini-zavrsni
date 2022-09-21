@@ -122,12 +122,6 @@ h1 {
   gap: 3rem;
 }
 
-.container {
-  max-width: 60rem;
-  margin: 0 auto;
-  padding: 3rem 0;
-}
-
 .w-100 {
   width: 100%;
 }
@@ -204,11 +198,47 @@ h1 {
   text-decoration: none;
 }
 
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 4rem 0;
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+    padding: 3rem 2rem;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+}
+
 .sport-term-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 25rem));
   gap: 2rem;
+}
+
+@media screen and (max-width: 900px) {
+  .sport-term-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .sport-term-grid {
+    grid-template-columns: minmax(15rem, 20rem);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .sport-term-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ----------- DROPDOWN ---------*/
@@ -310,6 +340,12 @@ h1 {
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 1300px) {
+  .nav {
+    padding: 0 2rem;
+  }
 }
 
 .nav__center {
@@ -414,15 +450,15 @@ h1 {
   position: absolute;
   z-index: 999;
   top: 58px;
+  right: 0;
   max-width: 300px;
-  width: 20vw;
+  width: 30vw;
   padding: 1rem;
   overflow: hidden;
   background-color: #f1f3f6;
   border: 1px solid #77859a;
   border-radius: 0.7rem;
   box-shadow: 0px 2px 1rem rgba(24, 25, 26, 0.2);
-  transform: translateX(-45%);
 }
 
 .menu {

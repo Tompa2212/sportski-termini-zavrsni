@@ -49,7 +49,7 @@ export const SportTermIListItem: React.FC<SportTermListItemProps> = ({
         </div>
       </div>
       <Link
-        to={`sportskiTermin/${sportTerm.id}`}
+        to={`/sportskiTermin/${sportTerm.id}`}
         className="btn w-100"
         style={{
           display: 'inline-block',

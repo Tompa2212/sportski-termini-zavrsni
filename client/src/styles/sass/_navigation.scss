@@ -9,6 +9,10 @@
   align-items: center;
   margin: 0 auto;
 
+  @media screen and (max-width: 1300px) {
+    padding: 0 2rem;
+  }
+
   &__center {
     margin: 0;
     list-style: none;
@@ -113,15 +117,16 @@
   position: absolute;
   z-index: 999;
   top: 58px;
+  right: 0;
   max-width: 300px;
-  width: 20vw;
+  width: 30vw;
   padding: 1rem;
   overflow: hidden;
   background-color: $bg-color;
   border: $border;
   border-radius: $border-radius;
   box-shadow: 0px 2px 1rem rgba($text-color, 0.2);
-  transform: translateX(-45%);
+  // transform: translateX(-45%);
 }
 
 .menu {

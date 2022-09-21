@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useForm } from 'uniforms';
 
 const isModelEmpty = (model: Record<string, any>) => {
-  if (Object.keys(model).length === 0) {
+  if (Object.keys(model || {}).length === 0) {
     return true;
   }
 
@@ -17,19 +16,16 @@ const isModelEmpty = (model: Record<string, any>) => {
 interface SubmitFieldProps {
   title: string;
   className?: string;
+  formData?: any;
 }
 
-export const SubmitField: React.FC<SubmitFieldProps> = ({ title, className }) => {
-  const { error, changed, model } = useForm();
-
-  const disabled = error || !changed;
-
+export const SubmitField: React.FC<SubmitFieldProps> = ({
+  title,
+  className,
+  formData,
+}) => {
   return (
-    <Button
-      type="submit"
-      className={className}
-      disabled={disabled || isModelEmpty(model)}
-    >
+    <Button type="submit" className={className} disabled={isModelEmpty(formData)}>
       {title}
     </Button>
   );

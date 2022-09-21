@@ -5,7 +5,10 @@ import {
   searchUsers,
   updateUser,
 } from '../controllers/user/userController.js';
-import { getUserStats } from '../controllers/user/userStatsController.js';
+import {
+  getUserCurrentGames,
+  getUserStats,
+} from '../controllers/user/userStatsController.js';
 
 export const userRouter = express.Router();
 
@@ -15,4 +18,5 @@ userRouter.get('/:id', getUserInfo);
 userRouter.patch('/:id', updateUser);
 userRouter.post('/initialize', initializeUser);
 
-userRouter.get('/:id/stats', getUserStats);
+userRouter.get('/:username/stats', getUserStats);
+userRouter.get('/:username/games', getUserCurrentGames);

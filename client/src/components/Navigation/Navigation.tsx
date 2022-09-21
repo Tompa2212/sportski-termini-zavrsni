@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { SettingsDropdown } from './SettingsDropdown';
 import { ReactComponent as HomeIcon } from '../../assets/icons/home.svg';
 import { ReactComponent as CreateSportTermIcon } from '../../assets/icons/createTerm.svg';
@@ -26,8 +26,6 @@ const links = [
 ];
 
 export const Navigation = () => {
-  const location = useLocation();
-
   return (
     <header className="shadow">
       <nav className="nav">

@@ -77,6 +77,7 @@ const Wrapper = styled.div`
     justify-items: end;
     border-bottom: 1px solid var(--gray-light);
     margin-bottom: 1rem;
+    padding: 0.5rem 0;
 
     h4 {
       font-weight: 400;

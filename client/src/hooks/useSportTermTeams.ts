@@ -26,20 +26,23 @@ export const useSportTermTeams = (sportTermId: string | undefined) => {
   const teams = data?.teams || [];
 
   const addPlayer = async (teamId: string) => {
-    const isInAnotherTeam = !!teams
-      .flatMap((team) => {
-        if (team.id === teamId) {
-          return [];
-        }
+    const [otherTeamId] = teams.flatMap((team) => {
+      if (team.id === teamId) {
+        return [];
+      }
 
-        return [team.players];
-      })
-      .find((players) => players.find((player) => player.id === user?.id));
+      const player = team.players.find((player) => player.id === user?.id);
 
-    if (isInAnotherTeam) {
+      if (!player) {
+        return [];
+      }
+      return [team.id];
+    });
+
+    if (otherTeamId) {
       await executeAction({
         link: {
-          href: createRemovePlayerLink(teamId, user?.username || ''),
+          href: createRemovePlayerLink(otherTeamId, user?.username || ''),
           type: 'DELETE',
         },
       });

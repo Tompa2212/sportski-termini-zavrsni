@@ -1,4 +1,4 @@
-import TextInput from '../components/FormFields/TextInput';
+import TextInput from '../components/FormFields/TextField';
 
 export const registerSchema = {
   title: 'Register',
@@ -34,4 +34,5 @@ export const registerFormFields = [
   { name: 'email', label: 'Email' },
   { name: 'password', label: 'Lozinka' },
   { name: 'confirmPassword', label: 'Potvrdi lozinku' },
+  { name: 'profilePhoto', label: 'Profilna fotografija' },
 ];

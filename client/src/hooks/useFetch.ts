@@ -31,7 +31,7 @@ export const useFetch = <T = unknown>(link: string): UseFetchReturnVal<T> => {
       }
 
       case 'success': {
-        return { ...state, data: action.payload };
+        return { ...state, data: action.payload, status: 'success' };
       }
 
       case 'error': {

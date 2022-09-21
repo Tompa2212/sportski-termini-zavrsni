@@ -1,7 +1,7 @@
 import SelectField from '../components/FormFields/SelectField';
 import BooleanField from '../components/FormFields/BooleanField';
 import LongText from '../components/FormFields/LongText';
-import TextInput from '../components/FormFields/TextInput';
+import TextInput from '../components/FormFields/TextField';
 import DateTimeField from '../components/FormFields/DateTimeField';
 
 export const createTermSchema = {

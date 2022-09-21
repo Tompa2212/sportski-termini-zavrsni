@@ -1,7 +1,33 @@
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 4rem 0;
+
+  @media screen and (max-width: 1300px) {
+    padding: 3rem 2rem;
+  }
+
+  @media screen and (max-width: 460px) {
+    padding: 2rem 1rem;
+  }
+}
+
 .sport-term-grid {
   width: 100%;
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 25rem));
   gap: 2rem;
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (max-width: 700px) {
+    grid-template-columns: minmax(15rem, 20rem);
+  }
+
+  @media screen and (max-width: 450px) {
+    grid-template-columns: 1fr;
+  }
 }

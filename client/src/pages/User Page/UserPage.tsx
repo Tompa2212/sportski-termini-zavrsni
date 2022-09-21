@@ -8,13 +8,13 @@ import { useUser } from '../../providers/authProvider';
 import { FriendsModal } from './FriendsModal';
 import { SportStats } from './SportStats';
 import { UserActions } from './UserActions';
+import { UserPlayedGames } from './UserPlayedGames';
 
 export const UserPage = () => {
   const user = useUser();
 
   const { username: paramUsername } = useParams();
   const [showFriendsModal, setShowFriendsModal] = useState(false);
-
   const [activeKey, setActiveKey] = useState('terms');
 
   const {
@@ -78,7 +78,7 @@ export const UserPage = () => {
         </header>
         <Tabs activeKey={activeKey} onSelect={(key) => setActiveKey(key)}>
           <Tab eventKey="terms" title="Sportski Termini">
-            dinamo
+            <UserPlayedGames />
           </Tab>
           <Tab eventKey="stats" title="Statistika">
             <SportStats />

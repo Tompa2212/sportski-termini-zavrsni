@@ -1,4 +1,4 @@
-import TextInput from '../components/FormFields/TextInput';
+import TextInput from '../components/FormFields/TextField';
 
 export const loginSchema = {
   title: 'Login',
