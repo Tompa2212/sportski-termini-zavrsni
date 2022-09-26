@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import { Link } from '../models/Link';
 import { uniqueId } from 'lodash';
+import { useAuth } from './authProvider';
 
 interface MakeRequestOptions {
   body?: any;
@@ -30,6 +31,7 @@ export const ApiProvider: React.FC<
   ApiProviderProps & { children: React.ReactNode }
 > = ({ getBearerToken, children }) => {
   const getBearerTokenRef = useRef<() => string | null | undefined>(() => undefined);
+  const { signout } = useAuth();
 
   const createFetcher = (): AxiosInstance => {
     const fetcher = axios.create({
@@ -50,6 +52,18 @@ export const ApiProvider: React.FC<
         headers,
       };
     });
+
+    fetcher.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          signout();
+        }
+        return Promise.reject(error);
+      }
+    );
 
     return fetcher;
   };

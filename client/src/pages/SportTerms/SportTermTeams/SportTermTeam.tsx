@@ -36,7 +36,13 @@ export const SportTermTeam: React.FC<SportTermTeamProps> = ({
       <h3>{team?.name || 'Tim A'}</h3>
       <div>
         {team?.players.map((player) => {
-          return <SportTermPlayer key={player.id} username={player.username} />;
+          return (
+            <SportTermPlayer
+              key={player.id}
+              username={player.username}
+              profilePhotoSrc={player.profilePhotoSrc}
+            />
+          );
         })}
       </div>
       <button

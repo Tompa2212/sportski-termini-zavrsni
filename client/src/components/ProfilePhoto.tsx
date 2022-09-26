@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import defaultPhoto from '../assets/default_photo.png';
 
 interface ProfilePhotoProps {
   style?: React.CSSProperties;
@@ -16,7 +17,8 @@ const Wrapper = styled.figure`
   width: 10rem;
   height: 10rem;
 
-  background-color: gray;
+  background-image: url(${defaultPhoto});
+  background-size: cover;
 
   img {
     width: 100%;

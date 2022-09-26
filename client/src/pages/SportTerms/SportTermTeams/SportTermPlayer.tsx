@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ProfilePhoto } from '../../../components/ProfilePhoto';
 
-export const SportTermPlayer: React.FC<{ username: string }> = ({ username }) => {
+export const SportTermPlayer: React.FC<{
+  username: string;
+  profilePhotoSrc: string | null;
+}> = ({ username, profilePhotoSrc }) => {
   return (
     <Wrapper className="d-flex">
-      <span className="icon"></span>
+      <ProfilePhoto src={profilePhotoSrc} style={{ width: '3rem', height: '3rem' }} />
       <p className="bold">{username}</p>
     </Wrapper>
   );
